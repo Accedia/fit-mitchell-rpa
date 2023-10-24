@@ -22,7 +22,7 @@
     "dev": "concurrently \"npm:dev:*\"",
     "package": "npm run build && electron-forge package",
     "make": "npm run build && electron-forge make",
-    "publish": "electron-forge publish --auth-token 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"
+    "publish": "electron-forge publish"
   },
   "repository": "https://github.com/Accedia/force-import-technology",
   "author": "Full Impact Technologies",
