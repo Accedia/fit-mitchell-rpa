@@ -16,7 +16,6 @@ module.exports = {
     {
       name: '@electron-forge/publisher-github',
       config: {
-        authToken: process.env.FORGE_TOKEN,
         repository: {
           owner: 'Accedia',
           name: 'force-import-technology',
