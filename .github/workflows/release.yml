@@ -1,0 +1,30 @@
+name: RELEASE
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-publish:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2      
+          
+      - name: npm install electron
+        working-directory: ./electron-app
+        run: npm install
+        
+      - name: npm install react
+        working-directory: ./react-app
+        run: npm install
+        
+      - name: Build
+        working-directory: ./electron-app
+        run: npm run build
+
+      - name: Publish Application
+        env:
+          FORGE_TOKEN: ${{ secrets.FORGE_TOKEN }}
+        working-directory: ./electron-app
+        run: npm run publish

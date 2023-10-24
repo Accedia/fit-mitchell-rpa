@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@electron-app": ["../electron-app/index.ts"],
+      "@react-app/utils/*": ["./src/utils/*"]
+    }
+  }
+}

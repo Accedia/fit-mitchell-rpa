@@ -1,0 +1,8 @@
+node_modules
+dist
+build
+release-app
+FIT-win32-x64
+out
+**/.env
+.vscode/sttings.json
