@@ -1,0 +1,22 @@
+.setting-container {
+  justify-content: center;
+  width: 100%;
+  margin-top: 15px;
+
+  &:first-child {
+    margin-top: 0px;
+  }
+}
+
+.fit-settings-logo {
+  width: 50px;
+  margin-right: 1.5rem;
+}
+
+.version-text {
+  font-size: 0.8rem;
+
+  .version-label {
+    font-weight: 800;
+  }
+}

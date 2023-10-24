@@ -1,0 +1,59 @@
+.fit-loader-logo {
+}
+
+.error-loading .fit-loader-logo,
+.success-loading .fit-loader-logo {
+  filter: brightness(0) invert(1);
+}
+
+.loading-page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 250px;
+  transition: 0.4s;
+  padding: 1rem;
+
+  &.error-loading {
+    background: red;
+    color: white;
+  }
+
+  &.success-loading {
+    background: rgb(38, 81, 221);
+    color: white;
+  }
+
+  .status-text {
+    width: 70%;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .action-button {
+    background-color: white !important;
+    margin-top: 20px !important;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3) !important;
+
+    &:hover {
+      background-color: rgba(233, 233, 233, 1) !important;
+      margin-top: 20px !important;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+  }
+
+  .progress-bar {
+    width: 80%;
+    margin-top: 10px !important;
+  }
+
+  .notification-segment {
+    position: absolute;
+    bottom: 0;
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+}
