@@ -11,9 +11,21 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Cache node_modules (Electron)
+        uses: actions/cache@v2
+        with:
+          path: ./electron-app/node_modules
+          key: electron-node-modules-${{ hashFiles('electron-app/package-lock.json') }}
+
       - name: npm install electron
         working-directory: ./electron-app
         run: npm install
+
+      - name: Cache node_modules (React)
+        uses: actions/cache@v2
+        with:
+          path: ./react-app/node_modules
+          key: react-node-modules-${{ hashFiles('react-app/package-lock.json') }}
 
       - name: npm install react
         working-directory: ./react-app
