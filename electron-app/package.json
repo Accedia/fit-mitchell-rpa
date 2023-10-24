@@ -2,7 +2,7 @@
   "name": "force-import-technology",
   "appname": "REV Import Technology Manual",
   "productName": "REV Import Technology Manual",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "homepage": "./",
   "main": "./dist/main.js",
   "description": "Automation for CCC by FIT",
