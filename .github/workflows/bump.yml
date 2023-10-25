@@ -2,29 +2,22 @@ name: BUMP
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
   tag-and-bump:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v2
-         - name: Check GitHub Token
-        run: |
-          echo "GitHub Token: ${{ secrets.GITHUB_TOKEN }}"
-          if [[ -n "${{ secrets.GITHUB_TOKEN }}" ]]; then
-            echo "GitHub Token is available."
-          else
-            echo "GitHub Token is not available."
-          fi
-      - name:  'Automated Version Bump'
-        uses:  'phips28/gh-action-bump-version@master'
+
+      - name: 'Automated Version Bump'
+        uses: 'phips28/gh-action-bump-version@master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PACKAGEJSON_DIR: 'electron-app'
         with:
-          tag-prefix:  'v'
+          tag-prefix: 'v'
           commit-message: 'CI: bumps version to {{version}} [skip ci]'
-          major-wording:  'MAJOR,major'
-          minor-wording:  'MINOR,minor'
+          major-wording: 'MAJOR,major'
+          minor-wording: 'MINOR,minor'
