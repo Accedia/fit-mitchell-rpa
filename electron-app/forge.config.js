@@ -20,7 +20,7 @@ module.exports = {
         authToken: process.env.FORGE_TOKEN,
         repository: {
           owner: 'Accedia',
-          name: 'force-import-technology',
+          name: 'fit-mitchell-rpa',
         },
         draft: false,
       },
