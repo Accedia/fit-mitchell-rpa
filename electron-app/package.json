@@ -2,7 +2,7 @@
   "name": "force-import-technology",
   "appname": "REV Import Technology Manual",
   "productName": "REV Import Technology Manual",
-  "version": "1.5.24",
+  "version": "1.5.25",
   "homepage": "./",
   "main": "./dist/main.js",
   "description": "Automation for CCC by FIT",
@@ -24,7 +24,7 @@
     "make": "npm run build && electron-forge make",
     "publish": "electron-forge publish"
   },
-  "repository": "https://github.com/Accedia/force-import-technology",
+  "repository": "https://github.com/Accedia/fit-mitchell-rpa",
   "author": "Full Impact Technologies",
   "license": "CC0-1.0",
   "devDependencies": {
