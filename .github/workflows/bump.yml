@@ -10,7 +10,14 @@ jobs:
     
     steps:
       - uses: actions/checkout@v2
-      
+         - name: Check GitHub Token
+        run: |
+          echo "GitHub Token: ${{ secrets.GITHUB_TOKEN }}"
+          if [[ -n "${{ secrets.GITHUB_TOKEN }}" ]]; then
+            echo "GitHub Token is available."
+          else
+            echo "GitHub Token is not available."
+          fi
       - name:  'Automated Version Bump'
         uses:  'phips28/gh-action-bump-version@master'
         env:
