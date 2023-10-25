@@ -24,7 +24,7 @@
     "make": "npm run build && electron-forge make",
     "publish": "electron-forge publish"
   },
-  "repository": "https://github.com/Accedia/force-import-technology",
+  "repository": "https://github.com/Accedia/fit-mitchell-rpa",
   "author": "Full Impact Technologies",
   "license": "CC0-1.0",
   "devDependencies": {
