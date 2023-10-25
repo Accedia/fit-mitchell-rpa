@@ -2,7 +2,8 @@ name: RELEASE
 
 on:
   push:
-    branches: [main]
+    branches: [main,publish]
+  
 
 jobs:
   build-and-publish:
