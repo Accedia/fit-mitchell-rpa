@@ -11,6 +11,7 @@ module.exports = {
     out: 'release-app',
     icon: iconPath,
     overwrite: true,
+    ignore: ['^\\/node_modules$'],
   },
   publishers: [
     {
