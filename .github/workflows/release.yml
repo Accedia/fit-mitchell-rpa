@@ -37,4 +37,6 @@ jobs:
 
       - name: Publish Application
         working-directory: ./electron-app
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run publish
