@@ -79,7 +79,7 @@ export class AutoUpdater {
 
   private getLatestVersion = async () => {
     const response = await axios.get<LatestRelease>(
-      'https://api.github.com/repos/Accedia/force-import-technology/releases/latest'
+      'https://api.github.com/repos/Accedia/fit-mitchell-rpa/releases/latest'
     );
 
     const assets = response.data.assets.map((asset) => ({
