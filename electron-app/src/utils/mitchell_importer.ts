@@ -188,7 +188,6 @@ export class Mitchell_Importer extends Importer {
       result.errors.forEach((error) => typeButton === MitchellButtons.manualLineButton ? log.warn('Error finding the Manual Line button', error) : log.warn('Error finding the Commit button', error));
     }
   };
-  
 
   // private checkForCommitButtonCoordinates = async (): Promise<Point> => {
   //   const images = fs.readdirSync(path.resolve(__dirname, '../../assets/commit-button'));
@@ -338,8 +337,13 @@ export class Mitchell_Importer extends Importer {
     this.progressUpdater.update();
     await this.pressTabButton(1); // Go to Total Price
     await this.typeMitchellValue(partPrice); // Type Total Price calculated in our back-end
+    this.progressUpdater.update();
 
-    await this.pressTabButton(4); // go to add line
+    await this.pressTabButton(1); // go to checkbox Tax
+    await keyboard.pressKey(Key.Space); // Uncheck Tax
+    await keyboard.releaseKey(Key.Space); // Uncheck Tax
+
+    await this.pressTabButton(3); // go to add line
     await keyboard.pressKey(Key.Enter); // press Add Line with Enter
     await keyboard.releaseKey(Key.Enter);
     this.progressUpdater.update();
