@@ -22,12 +22,12 @@ jobs:
       - name: Clear npm cache
         run: npm cache clean --force
 
-      - name: npm install react
-        working-directory: ./react-app
-        run: npm install
-
       - name: npm install electron
         working-directory: ./electron-app
+        run: npm install
+
+      - name: npm install react
+        working-directory: ./react-app
         run: npm install
 
       - name: Build
