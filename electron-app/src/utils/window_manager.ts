@@ -10,6 +10,7 @@ import importer from './importer';
 import { FirebaseService } from './firebase';
 import { extractSessionIdFromUrl } from './extract_sessionid_from_url';
 import mitchell_importer from './mitchell_importer';
+import log  from 'electron-log';
 
 type MaybeBrowserWindow = BrowserWindow | null;
 
@@ -61,6 +62,8 @@ class WindowManager {
   };
 
   public startLoading = (): void => {
+    log.info("Here in the startLoading")
+    log.info('app', app)
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
@@ -81,6 +84,7 @@ class WindowManager {
   };
 
   public startApp = async (): Promise<void> => {
+    log.info('Here in startApp')
     await this.createMainWindow();
     if (process.platform !== 'darwin') {
       const url = getCustomProtocolUrl(process.argv);
@@ -94,8 +98,8 @@ class WindowManager {
     }
   };
 
-  public createMainWindow = (): Promise<void> => {
-    return new Promise((resolve, reject) => {
+  public createMainWindow = (): Promise<void>=> {
+     new Promise<void>((resolve, reject) => {
       this.mainWindow = new BrowserWindow(WINDOW_CONFIG.main);
       this.createBlockOverlayWindow();
       this.mainWindow.once('ready-to-show', () => {
@@ -105,7 +109,11 @@ class WindowManager {
         mitchell_importer.setProgressBrowserWindow(this.mainWindow);
         this.loadingWindow.hide();
         this.loadingWindow.close();
+
         resolve();
+      });
+      this.mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+        reject(`Failed to load window: ${errorDescription}`);
       });
       this.mainWindow.on('close', () => {
         importer.stop();
@@ -117,6 +125,7 @@ class WindowManager {
       } else {
         this.mainWindow.loadFile(this.prodUrl);
       }
+
     });
   };
 
