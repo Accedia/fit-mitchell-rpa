@@ -79,9 +79,11 @@ log.info( 'loadfiel',this.loadingWindow.loadFile(this.prodUrl, {
       if (url) {
         const sessionId = extractSessionIdFromUrl(url);
         FirebaseService.useCurrentSession.set(sessionId);
+        log.info('here after setting the session')
       }
 
       if (!isAppDev(app) && !isDev()) {
+        log.info('check if we enter here')
         const autoUpdater = new AutoUpdater(this.loadingWindow);
         await autoUpdater.checkAndDownloadUpdates();
       }
