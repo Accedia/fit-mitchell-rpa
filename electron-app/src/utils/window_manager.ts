@@ -99,7 +99,7 @@ class WindowManager {
   };
 
   public createMainWindow = (): Promise<void>=> {
-     new Promise<void>((resolve, reject) => {
+     return new Promise<void>((resolve, reject) => {
       this.mainWindow = new BrowserWindow(WINDOW_CONFIG.main);
       this.createBlockOverlayWindow();
       this.mainWindow.once('ready-to-show', () => {
