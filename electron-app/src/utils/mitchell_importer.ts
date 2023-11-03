@@ -58,7 +58,7 @@ export class Mitchell_Importer extends Importer {
     // screen.config.highlightOpacity = 0.8;
   };
 
-  public startPopulation = async (data: ResponseData, electronWindow: BrowserWindow): Promise<void> => {
+  public startPopulation = async (data: ResponseData, electronWindow: BrowserWindow, url: string): Promise<void> => {
     const { forgettables, automationId, automationIdToFinishRPA, selectedTypeForCommit } = data;
     this.startSession(automationId);
     this.start();
@@ -110,7 +110,7 @@ export class Mitchell_Importer extends Importer {
           }
 
           await FirebaseService.useCurrentSession.setStatus(SessionStatus.COMPLETED);
-          this.complete(automationIdToFinishRPA);
+          this.complete(automationIdToFinishRPA, url);
         }
       }
 

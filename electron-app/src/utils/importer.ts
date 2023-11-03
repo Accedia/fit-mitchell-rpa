@@ -87,8 +87,8 @@ export class Importer {
     this._isRunning = false;
   };
 
-  public complete = async (automationIdToFinishRPA: string) => {
-    this.finishImport(automationIdToFinishRPA);
+  public complete = async (automationIdToFinishRPA: string, url?: string) => {
+    this.finishImport(automationIdToFinishRPA, url);
     FirebaseService.useCurrentSession.setStatus(SessionStatus.COMPLETED);
     FirebaseService.unsubscribe();
     FirebaseService.useCurrentSession.remove();
@@ -204,11 +204,14 @@ export class Importer {
     }
   };
 
-  private finishImport = async (automationIdToFinishRPA: string) => {
-    //TODO: export url to be able to be accessable for dev and prod
-    let urlToFinishRPA = `http://localhost:4002/api/finishAutomation/${automationIdToFinishRPA}`;
+  private finishImport = async (automationIdToFinishRPA: string, url?: string) => {
+    let urlToFinishRPA = url.includes('localhost')
+    ? `http://[::1]:4002/api/finishAutomation/${automationIdToFinishRPA}` 
+    : url.includes('dev') 
+      ? `https://dev.fit-portal.com/api/finishAutomation/${automationIdToFinishRPA}` 
+      : `https://fit-portal.com/api/finishAutomation/${automationIdToFinishRPA}` ;
+      log.info('This is the URL we make post request to finish automation', urlToFinishRPA)
     urlToFinishRPA = urlToFinishRPA.replace('localhost', '[::1]');
-    log.info('automation url', urlToFinishRPA);
     await axios.post(urlToFinishRPA);
   };
 

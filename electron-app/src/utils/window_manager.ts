@@ -53,13 +53,9 @@ class WindowManager {
 
   private loadLoadingWindowContent = () => {
     if (isDev()) {
-      log.info('is in if isDEv')
       this.loadingWindow.loadURL(`${this.devUrl}#${this.paths.loading}`);
     } else {
-      log.info('prodUrl', this.prodUrl)
-log.info( 'loadfiel',this.loadingWindow.loadFile(this.prodUrl, {
-  hash: this.paths.loading,
-}))
+
       this.loadingWindow.loadFile(this.prodUrl, {
         hash: this.paths.loading,
       });
@@ -67,23 +63,17 @@ log.info( 'loadfiel',this.loadingWindow.loadFile(this.prodUrl, {
   };
 
   public startLoading = (): void => {
-    log.info("Here in the startLoading")
-    log.info('app', app.isPackaged)
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
-    log.info('loadingWindow', this.loadingWindow )
     this.loadingWindow.once('show', async () => {
 
       const url = getCustomProtocolUrl(process.argv);
-      log.info('url', url)
       if (url) {
         const sessionId = extractSessionIdFromUrl(url);
         FirebaseService.useCurrentSession.set(sessionId);
-        log.info('here after setting the session')
       }
 
       if (!isAppDev(app) && !isDev()) {
-        log.info('check if we enter here')
         const autoUpdater = new AutoUpdater(this.loadingWindow);
         await autoUpdater.checkAndDownloadUpdates();
       }
@@ -94,7 +84,6 @@ log.info( 'loadfiel',this.loadingWindow.loadFile(this.prodUrl, {
   };
 
   public startApp = async (): Promise<void> => {
-    log.info('Here in startApp')
     await this.createMainWindow();
     if (process.platform !== 'darwin') {
       const url = getCustomProtocolUrl(process.argv);
