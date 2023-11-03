@@ -100,7 +100,7 @@ export class Importer {
     this.progressUpdater.setElectronWindow(electronWindow);
   };
 
-  public startPopulation = async (data: ResponseData, electronWindow: BrowserWindow) => {
+  public startPopulation = async (data: ResponseData, electronWindow: BrowserWindow, url?: string) => {
     const { forgettables, automationId, automationIdToFinishRPA } = data;
 
     this.startSession(automationId);
