@@ -38,7 +38,6 @@ class Main {
   }
 
   private registerCustomProtocol = () => {
-    log.info("Here in registerCusTomPrtocol")
     app.removeAsDefaultProtocolClient(CUSTOM_PROTOCOL);
 
     /** The extra two parameters are required for windows development version */
@@ -51,7 +50,6 @@ class Main {
 
   private createSingleInstanceLock = () => {
     const gotTheLock = app.requestSingleInstanceLock();
-    log.info("Here createSingleInstance")
 
     if (!gotTheLock) {
       app.quit();
@@ -64,7 +62,6 @@ class Main {
            * Enters here when app is opened from the browser
            * after it has been started manually before that
            */
-          log.info("is this main widnow")
           importer.stop();
           this.windowManager.mainWindow.webContents.send(MESSAGE.RESET_CONTROLS_STATE);
         } else if (url) {
@@ -72,14 +69,12 @@ class Main {
            * I don't know when we enter here
            */
           log.debug('It seems we need this');
-          log.info("create new main window")
           await this.windowManager.createMainWindow();
         }
 
         if (url) {
           // ? Is this snooze necessary, check if it causes problems
           // await snooze(1500);
-          log.info("in if url")
           this.fetchDataAndStartImporter(url);
         }
       });
@@ -147,7 +142,7 @@ class Main {
       /** Do the population (CCC || Mitchell) */
       if (data.dataSource === 'Mitchell') {
         // await importer.startMitchellPopulation(data, this.windowManager.mainWindow);
-        await mitchell_importer.startPopulation(data, this.windowManager.mainWindow);
+        await mitchell_importer.startPopulation(data, this.windowManager.mainWindow, url);
       } else if (data.dataSource === 'CCC') {
         await importer.startPopulation(data, this.windowManager.mainWindow);
       }
