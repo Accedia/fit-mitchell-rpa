@@ -26,8 +26,8 @@ const COMMON_CONFIG: CommonConfigOptions = {
 export const WINDOW_CONFIG: WindowConfig = {
   main: {
     ...COMMON_CONFIG,
-    height: 225,
-    width: 400,
+    height: 265,
+    width: 420,
     resizable: false,
   },
   loading: {

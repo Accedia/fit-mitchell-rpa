@@ -25,6 +25,10 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
     });
   };
 
+  const closeApp = () => {
+  ipcRenderer.send('close-app')
+  }
+
   const stopPopulationStateUpdate = useCallback(() => {
     resetState();
     dispatch({
@@ -179,9 +183,18 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
       <div>
         {!isDownloadingForgettables && (
           <>
+          <div className='installation-text'>Installation completed</div>
             <Divider horizontal>Actions</Divider>
             <div className="button-group">
-              {!isRunning && !isReady && <ActionButton.Manual />}
+              {!isRunning && !isReady && 
+              <div className='help-container'>
+                <ActionButton.Manual />
+                <div className='instructions-container'>
+                  <div className='instructions-text'>For instructions - Click Help</div>
+                  <span><ActionButton.Done onClick={closeApp}/></span>
+                </div>
+              </div>
+            }
               {!isRunning && isReady && (
                 <>
                   <ActionButton.Finish onClick={resetState} />
