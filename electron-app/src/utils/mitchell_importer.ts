@@ -51,7 +51,7 @@ export class Mitchell_Importer extends Importer {
     // ! Left only for debug purposes
     // ? Uncomment if needed, do not deploy to prod
     if (isLookingForCommitButton) {
-      screen.config.confidence = 0.85;
+      screen.config.confidence = 0.98;
     }
     // screen.config.autoHighlight = true;
     // screen.config.highlightDurationMs = 3000;
@@ -165,6 +165,7 @@ export class Mitchell_Importer extends Importer {
         isFound = true;
         foundImage = true;
       } catch (err) {
+        log.warn('here is error', err)
         result.errors.push(err);
       }
 
@@ -302,6 +303,7 @@ export class Mitchell_Importer extends Importer {
       this.progressUpdater.update();
 
       await this.pressTabButton(3); // go to 'Add line' button
+      await snooze(2000);
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter
       await keyboard.releaseKey(Key.Enter);
 
