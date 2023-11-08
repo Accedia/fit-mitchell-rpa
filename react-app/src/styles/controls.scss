@@ -1,6 +1,6 @@
 .controls-loader {
   height: 100%;
-  overflow: hidden;
+  overflow: overlay;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -11,6 +11,12 @@
     flex-grow: 1;
     width: 100%;
     justify-content: center;
+  }
+
+  .installation-text {
+    display: flex;
+    align-items: center;
+    margin: 0;
   }
 
   .controls-progress {
@@ -41,4 +47,18 @@
   display: flex;
   justify-content: center;
   gap: 10px;
+}
+
+.help-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.instructions-container {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  padding-left: 8rem;
 }

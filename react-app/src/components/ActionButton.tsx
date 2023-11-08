@@ -42,9 +42,16 @@ const ManualButton: React.FC = () => {
   );
 };
 
+const DoneButton: React.FC<ButtonProps> = ({ onClick, disabled }) => (
+  <Button color="blue" onClick={onClick} disabled={disabled}>
+    Done
+  </Button>
+);
+
 export const ActionButton = {
   Back: BackButton,
   Stop: StopButton,
   Manual: ManualButton,
   Finish: FinishButton,
+  Done: DoneButton,
 };
