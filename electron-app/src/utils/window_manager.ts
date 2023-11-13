@@ -10,7 +10,7 @@ import importer from './importer';
 import { FirebaseService } from './firebase';
 import { extractSessionIdFromUrl } from './extract_sessionid_from_url';
 import mitchell_importer from './mitchell_importer';
-import log  from 'electron-log';
+import log from 'electron-log';
 
 type MaybeBrowserWindow = BrowserWindow | null;
 
@@ -97,8 +97,8 @@ class WindowManager {
     }
   };
 
-  public createMainWindow = (): Promise<void>=> {
-     return new Promise<void>((resolve, reject) => {
+  public createMainWindow = (): Promise<void> => {
+    return new Promise<void>((resolve, reject) => {
       this.mainWindow = new BrowserWindow(WINDOW_CONFIG.main);
       this.createBlockOverlayWindow();
       this.mainWindow.once('ready-to-show', () => {
@@ -116,6 +116,7 @@ class WindowManager {
       });
       this.mainWindow.on('close', () => {
         importer.stop();
+        mitchell_importer.stop();
         this.overlayWindow.close();
         app.quit();
       });
