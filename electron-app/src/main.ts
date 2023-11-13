@@ -27,10 +27,11 @@ if (require('electron-squirrel-startup')) app.quit();
 class Main {
   windowManager = new WindowManager();
   store = new Store();
-
+  finalUrl = '';
+  automationIdToFinishRPA = '';
   constructor() {
     app.on('ready', this.windowManager.startLoading);
-
+    this.finalUrl = '';
     this.registerCustomProtocol();
     this.createSingleInstanceLock();
     this.registerMainListeners();
@@ -56,7 +57,7 @@ class Main {
     } else {
       app.on('second-instance', async (e, argv) => {
         const url = getCustomProtocolUrl(argv);
-
+        this.finalUrl = url;
         if (this.windowManager.mainWindow) {
           /**
            * Enters here when app is opened from the browser
@@ -81,7 +82,15 @@ class Main {
     }
   };
 
+
+  private stopMitchell = () => {
+    log.info('Final Protocol URL:', this.finalUrl);
+    log.info('Final automationIdToFinishRPA', this.automationIdToFinishRPA)
+    mitchell_importer.complete(this.automationIdToFinishRPA, this.finalUrl)
+    app.quit()
+  };
   private registerMainListeners = () => {
+    ipcMain.on(MESSAGE.STOP_IMPORTER, this.stopMitchell);
     ipcMain.on(MESSAGE.STOP_IMPORTER, importer.stop);
     ipcMain.on(MESSAGE.SET_INPUT_SPEED, this.setInputSpeed);
     ipcMain.on(MESSAGE.CLOSE_APP, app.quit);
@@ -96,8 +105,11 @@ class Main {
     app.whenReady().then(() => {
       globalShortcut.register('F7', () => {
         importer.stop();
+        mitchell_importer.stop();
         log.info('Force Import stopped manually with shortcut.');
         this.windowManager.mainWindow.webContents.send(MESSAGE.STOP_IMPORTER_SHORTCUT);
+        // snooze maybe?
+        app.quit();
       });
     });
   };
@@ -136,7 +148,7 @@ class Main {
       /** Fetch the data. Replace localhost with [::1] because otherwise it does not work */
       url = url.replace('localhost', '[::1]');
       const { data } = await axios.get<ResponseData>(url);
-
+      this.automationIdToFinishRPA = data.automationIdToFinishRPA;
       await FirebaseService.setSessionStatus(data.automationId, SessionStatus.APP_STARTED);
 
       /** Do the population (CCC || Mitchell) */

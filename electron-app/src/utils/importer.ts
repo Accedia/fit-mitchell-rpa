@@ -204,14 +204,14 @@ export class Importer {
     }
   };
 
-  private finishImport = async (automationIdToFinishRPA: string, url?: string) => {
+  public finishImport = async (automationIdToFinishRPA: string, url?: string) => {
     let urlToFinishRPA = url.includes('localhost')
-    ? `http://[::1]:4002/api/finishAutomation/${automationIdToFinishRPA}` 
-    : url.includes('dev') 
-      ? `https://dev.fit-portal.com/api/finishAutomation/${automationIdToFinishRPA}` 
-      : `https://fit-portal.com/api/finishAutomation/${automationIdToFinishRPA}` ;
-      log.info('This is the URL we make post request to finish automation', urlToFinishRPA)
+      ? `http://[::1]:4002/api/finishAutomation/${automationIdToFinishRPA}`
+      : url.includes('dev')
+        ? `https://dev.fit-portal.com/api/finishAutomation/${automationIdToFinishRPA}`
+        : `https://fit-portal.com/api/finishAutomation/${automationIdToFinishRPA}`;
     urlToFinishRPA = urlToFinishRPA.replace('localhost', '[::1]');
+    log.info('This is the URL we make post request to finish automation', urlToFinishRPA)
     await axios.post(urlToFinishRPA);
   };
 
