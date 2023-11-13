@@ -88,7 +88,16 @@ export class Importer {
   };
 
   public complete = async (automationIdToFinishRPA: string, url?: string) => {
-    this.finishImport(automationIdToFinishRPA, url);
+    await this.finishImport(automationIdToFinishRPA, url);
+    FirebaseService.useCurrentSession.setStatus(SessionStatus.COMPLETED);
+    FirebaseService.unsubscribe();
+    FirebaseService.useCurrentSession.remove();
+    FirebaseService.useCurrentSession.unset();
+    this._isRunning = false;
+  };
+
+  public abort = async (automationIdToFinishRPA: string, url?: string) => {
+    await this.abortImport(automationIdToFinishRPA, url);
     FirebaseService.useCurrentSession.setStatus(SessionStatus.COMPLETED);
     FirebaseService.unsubscribe();
     FirebaseService.useCurrentSession.remove();
@@ -205,13 +214,25 @@ export class Importer {
   };
 
   public finishImport = async (automationIdToFinishRPA: string, url?: string) => {
-    let urlToFinishRPA = url.includes('localhost')
+    console.log(url, 'This is the URL before using it for post to finish');
+    let urlToFinishRPA = url.includes('localhost') || url.includes('[::1]')
       ? `http://[::1]:4002/api/finishAutomation/${automationIdToFinishRPA}`
       : url.includes('dev')
         ? `https://dev.fit-portal.com/api/finishAutomation/${automationIdToFinishRPA}`
         : `https://fit-portal.com/api/finishAutomation/${automationIdToFinishRPA}`;
     urlToFinishRPA = urlToFinishRPA.replace('localhost', '[::1]');
     log.info('This is the URL we make post request to finish automation', urlToFinishRPA)
+    await axios.post(urlToFinishRPA);
+  };
+
+  public abortImport = async (automationIdToFinishRPA: string, url?: string) => {
+    let urlToFinishRPA = url.includes('localhost')
+      ? `http://[::1]:4002/api/abortAutomation/${automationIdToFinishRPA}`
+      : url.includes('dev')
+        ? `https://dev.fit-portal.com/api/abortAutomation/${automationIdToFinishRPA}`
+        : `https://fit-portal.com/api/abortAutomation/${automationIdToFinishRPA}`;
+    urlToFinishRPA = urlToFinishRPA.replace('localhost', '[::1]');
+    log.info('This is the URL we make post request to abort automation', urlToFinishRPA)
     await axios.post(urlToFinishRPA);
   };
 
