@@ -83,10 +83,11 @@ class Main {
   };
 
 
-  private stopMitchell = () => {
+  private stopMitchell = async () => {
+    log.info('In stop mitchell function');
     log.info('Final Protocol URL:', this.finalUrl);
     log.info('Final automationIdToFinishRPA', this.automationIdToFinishRPA)
-    mitchell_importer.complete(this.automationIdToFinishRPA, this.finalUrl)
+    await mitchell_importer.abort(this.automationIdToFinishRPA, this.finalUrl)
     app.quit()
   };
   private registerMainListeners = () => {
@@ -103,9 +104,10 @@ class Main {
      * F7 -> Stop the importer (same as stop button)
      */
     app.whenReady().then(() => {
-      globalShortcut.register('F7', () => {
+      globalShortcut.register('F7', async () => {
         importer.stop();
         mitchell_importer.stop();
+        await this.stopMitchell();
         log.info('Force Import stopped manually with shortcut.');
         this.windowManager.mainWindow.webContents.send(MESSAGE.STOP_IMPORTER_SHORTCUT);
         // snooze maybe?
