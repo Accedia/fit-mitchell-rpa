@@ -59,7 +59,7 @@ const Settings: React.FC = () => {
       <Message icon>
         <img className="fit-settings-logo" src={process.env.PUBLIC_URL + '/icon.ico'} alt="logo" />
         <Message.Content>
-          <Message.Header>REV Import Technology Manual</Message.Header>
+          <Message.Header>REV Import Technology</Message.Header>
           <div className="version-text">
             <span className="version-label">Version:</span> v{electron.remote.app.getVersion()}
           </div>

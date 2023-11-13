@@ -12,7 +12,7 @@ interface WindowConfig {
 }
 
 const COMMON_CONFIG: CommonConfigOptions = {
-  title: 'REV Import Technology Manual',
+  title: 'REV Import Technology',
   icon: path.resolve(__dirname, '../../assets/icon-white-bg.ico'),
   autoHideMenuBar: true,
   show: false,

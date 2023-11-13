@@ -32,10 +32,10 @@ module.exports = {
       config: {
         authors: 'Full Impact Technologies',
         name: 'ForceImportTechnology',
-        exe: 'REV Import Technology Manual.exe',
+        exe: 'REV Import Technology.exe',
         iconUrl: iconPath,
         setupIcon: iconPath,
-        setupExe: 'Install REV Import Technology Manual.exe',
+        setupExe: 'Install REV Import.exe',
         loadingGif: path.resolve(__dirname, './assets/logo_spinning_white.gif'),
         noMsi: true,
       },
