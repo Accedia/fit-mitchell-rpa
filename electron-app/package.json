@@ -1,7 +1,7 @@
 {
   "name": "fit-mitchell-rpa",
-  "appname": "REV Import Technology Manual",
-  "productName": "REV Import Technology Manual",
+  "appname": "REV Import Technology",
+  "productName": "REV Import Technology",
   "version": "1.5.39",
   "homepage": "./",
   "main": "./dist/main.js",
