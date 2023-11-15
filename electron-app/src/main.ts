@@ -55,10 +55,9 @@ class Main {
     if (!gotTheLock) {
       app.quit();
     } else {
+      // on dev and prod it does not enter here because we dont open a second instance but directly the first
       app.on('second-instance', async (e, argv) => {
-        log.info('argv argv', + argv);
         const url = getCustomProtocolUrl(argv);
-        this.finalUrl = url;
         if (this.windowManager.mainWindow) {
           /**
            * Enters here when app is opened from the browser
@@ -153,6 +152,7 @@ class Main {
       url = url.replace('localhost', '[::1]');
       const { data } = await axios.get<ResponseData>(url);
       this.automationIdToFinishRPA = data.automationIdToFinishRPA;
+      this.finalUrl = url;
       await FirebaseService.setSessionStatus(data.automationId, SessionStatus.APP_STARTED);
 
       /** Do the population (CCC || Mitchell) */
