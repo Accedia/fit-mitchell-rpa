@@ -56,8 +56,10 @@ class Main {
       app.quit();
     } else {
       // on dev and prod it does not enter here because we dont open a second instance but directly the first
+      // locally we enter here though
       app.on('second-instance', async (e, argv) => {
         const url = getCustomProtocolUrl(argv);
+        this.finalUrl = url;
         if (this.windowManager.mainWindow) {
           /**
            * Enters here when app is opened from the browser
