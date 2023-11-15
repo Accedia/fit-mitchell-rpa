@@ -56,6 +56,7 @@ class Main {
       app.quit();
     } else {
       app.on('second-instance', async (e, argv) => {
+        log.info('argv argv', + argv);
         const url = getCustomProtocolUrl(argv);
         this.finalUrl = url;
         if (this.windowManager.mainWindow) {
@@ -85,6 +86,7 @@ class Main {
 
   private stopMitchell = async () => {
     log.info('In stop mitchell function');
+    // In dev we're not getting the finalUrl for some reason
     log.info('Final Protocol URL:', this.finalUrl);
     log.info('Final automationIdToFinishRPA', this.automationIdToFinishRPA)
     await mitchell_importer.abort(this.automationIdToFinishRPA, this.finalUrl)
