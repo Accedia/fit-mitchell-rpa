@@ -26,8 +26,8 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
   };
 
   const closeApp = () => {
-  ipcRenderer.send('close-app')
-  }
+    ipcRenderer.send('close-app');
+  };
 
   const stopPopulationStateUpdate = useCallback(() => {
     resetState();
@@ -118,7 +118,7 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
   React.useEffect(() => {
     ipcRenderer.on(MESSAGE.RESET_CONTROLS_STATE, resetState);
 
-    return () => {          
+    return () => {
       ipcRenderer.removeListener(MESSAGE.RESET_CONTROLS_STATE, resetState);
     };
   }, []);
@@ -183,21 +183,23 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
       <div>
         {!isDownloadingForgettables && (
           <>
-          <div className='installation-text'>Installation completed</div>
             <Divider horizontal>Actions</Divider>
             <div className="button-group">
-              {!isRunning && !isReady && 
-              <div className='help-container'>
-                <ActionButton.Manual />
-                <div className='instructions-container'>
-                  <div className='instructions-text'>For instructions - Click Help</div>
-                  <span><ActionButton.Done onClick={closeApp}/></span>
+              {!isRunning && !isReady && (
+                <div className="help-container">
+                  <ActionButton.Manual />
+                  <div className="instructions-container">
+                    <div className="instructions-text">For instructions - Click Help</div>
+                    <span>
+                      <ActionButton.Done onClick={resetState} />
+                    </span>
+                  </div>
                 </div>
-              </div>
-            }
+              )}
               {!isRunning && isReady && (
                 <>
                   <ActionButton.Finish onClick={resetState} />
+                  <ActionButton.Manual />
                 </>
               )}
               {isRunning && <ActionButton.Stop onClick={stopTablePopulationExecution} />}
