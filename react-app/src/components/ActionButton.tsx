@@ -16,9 +16,9 @@ const BackButton: React.FC<ButtonProps> = ({ onClick, disabled }) => (
 );
 
 const FinishButton: React.FC<ButtonProps> = ({ onClick, disabled }) => (
-  <Button icon labelPosition="left" onClick={onClick} disabled={disabled}>
+  <Button icon labelPosition="left" color="blue" onClick={onClick} disabled={disabled}>
     <Icon name="checkmark" />
-    Finish
+    Done
   </Button>
 );
 
