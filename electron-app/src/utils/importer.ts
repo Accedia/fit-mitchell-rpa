@@ -226,7 +226,8 @@ export class Importer {
   };
 
   public abortImport = async (automationIdToFinishRPA: string, url?: string) => {
-    let urlToFinishRPA = url.includes('localhost')
+    console.log(url, 'This is the URL before using it for post to abort');
+    let urlToFinishRPA = url.includes('localhost') || url.includes('[::1]')
       ? `http://[::1]:4002/api/abortAutomation/${automationIdToFinishRPA}`
       : url.includes('dev')
         ? `https://dev.fit-portal.com/api/abortAutomation/${automationIdToFinishRPA}`
