@@ -25,10 +25,6 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
     });
   };
 
-  const closeApp = () => {
-    ipcRenderer.send('close-app');
-  };
-
   const stopPopulationStateUpdate = useCallback(() => {
     resetState();
     dispatch({
