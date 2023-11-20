@@ -183,6 +183,11 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
       <div>
         {!isDownloadingForgettables && (
           <>
+            {!isRunning && isReady && (
+              <div className="instruction-finishText">
+                <p>Click Done and go back to REV Download Log to finish transfer.</p>
+              </div>
+            )}
             <Divider horizontal>Actions</Divider>
             <div className="button-group">
               {!isRunning && !isReady && (
