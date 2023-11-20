@@ -25,9 +25,10 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
     });
   };
 
-  // const closeApp = () => {
-  //   ipcRenderer.send('close-app'ss);
-  // };
+  const closeApp = () => {
+    console.log('is called');
+    ipcRenderer.send('close-app');
+  };
 
   const stopPopulationStateUpdate = useCallback(() => {
     resetState();
@@ -196,7 +197,7 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
                   <div className="instructions-container">
                     <div className="instructions-text">For instructions - Click Help</div>
                     <span>
-                      <ActionButton.Done onClick={resetState} />
+                      <ActionButton.Done onClick={closeApp} />
                     </span>
                   </div>
                 </div>
