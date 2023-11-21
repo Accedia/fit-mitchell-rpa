@@ -204,7 +204,7 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
               )}
               {!isRunning && isReady && (
                 <>
-                  <ActionButton.Finish onClick={resetState} />
+                  <ActionButton.Finish onClick={closeApp} />
                   <ActionButton.Manual />
                 </>
               )}
