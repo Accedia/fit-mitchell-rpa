@@ -2,7 +2,7 @@
   "name": "fit-mitchell-rpa",
   "appname": "REV Import Technology",
   "productName": "REV Import Technology",
-  "version": "1.5.48",
+  "version": "1.5.50",
   "homepage": "./",
   "main": "./dist/main.js",
   "description": "Automation for CCC by FIT",

@@ -26,7 +26,6 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
   };
 
   const closeApp = () => {
-    console.log('is called');
     ipcRenderer.send('close-app');
   };
 
