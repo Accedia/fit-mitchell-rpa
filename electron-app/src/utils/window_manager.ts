@@ -66,8 +66,10 @@ class WindowManager {
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
-
+      log.info('in the .once `show` function')
       const url = getCustomProtocolUrl(process.argv);
+      log.info('this are the process.argv', + ' ', process.argv)
+      log.info('The url at line 71 in the startLoading', url);
       if (url) {
         const sessionId = extractSessionIdFromUrl(url);
         FirebaseService.useCurrentSession.set(sessionId);
@@ -86,9 +88,11 @@ class WindowManager {
 
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
+    // what if we dont have url cant we just re-run startLoading so we can get the url from it
     if (process.platform !== 'darwin') {
       const url = getCustomProtocolUrl(process.argv);
       log.info("This is the url at line 91 in startApp", url);
+      // since the updates make the app quit and re-open we don't get the url here it is undefined
       if (url) {
         /**
          * If the app has been opened by pressing the "Commit" button in REV
