@@ -75,9 +75,10 @@ class WindowManager {
 
       if (!isAppDev(app) && !isDev()) {
         const autoUpdater = new AutoUpdater(this.loadingWindow);
+        log.info('Here in the if check about !isDev() and awaiting the checkAndDownloadUpdates function');
         await autoUpdater.checkAndDownloadUpdates();
       }
-
+      log.info('Outside the If check next command is awaiting the startApp')
       await this.startApp();
     });
     this.loadingWindow.on('ready-to-show', this.loadingWindow.show);
@@ -87,11 +88,13 @@ class WindowManager {
     await this.createMainWindow();
     if (process.platform !== 'darwin') {
       const url = getCustomProtocolUrl(process.argv);
+      log.info("This is the url at line 91 in startApp", url);
       if (url) {
         /**
          * If the app has been opened by pressing the "Commit" button in REV
          * without the app being opened before that
          */
+        log.info('In start app function before awaiting fetchDataAndStartImporter');
         await fetchDataAndStartImporter(url);
       }
     }
