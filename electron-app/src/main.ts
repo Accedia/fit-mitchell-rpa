@@ -155,9 +155,9 @@ class Main {
       const { data } = await axios.get<ResponseData>(url);
       this.automationIdToFinishRPA = data.automationIdToFinishRPA;
       this.finalUrl = url;
-      const existingUrl = localStorage.getItem('url');
+      const existingUrl = store.get('url');
       if (existingUrl) {
-        localStorage.removeItem('url');
+        store.delete('url');
       }
       await FirebaseService.setSessionStatus(data.automationId, SessionStatus.APP_STARTED);
 
@@ -184,5 +184,6 @@ class Main {
 const main = new Main();
 
 export const getInputSpeed = main.getInputSpeed;
+export const store = main.store;
 export const fetchDataAndStartImporter = main.fetchDataAndStartImporter;
 export const mainWindowManager = main.windowManager;

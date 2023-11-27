@@ -10,6 +10,7 @@ import { promisify } from 'util';
 import { AppState } from '../interfaces/AppState';
 import log from 'electron-log';
 import { FirebaseService, SessionStatus } from './firebase';
+import { store } from '../main';
 
 type LatestRelease = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']['data'];
 
@@ -36,7 +37,9 @@ export class AutoUpdater {
     const shouldUpdate = this.isUpdateAvailable(app.getVersion(), latestVersion);
     log.info("Should update variable " + shouldUpdate);
     if (shouldUpdate) {
-      localStorage.setItem("url", url); // setting the url only if we have an update
+      store.set('url', url)
+      log.info(store.get('url'));
+      log.info('whole store', store);
     } else {
       this.sendUpdate('No updates found');
       return false;
