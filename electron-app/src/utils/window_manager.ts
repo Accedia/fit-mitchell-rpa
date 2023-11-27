@@ -67,7 +67,8 @@ class WindowManager {
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
       log.info('in the .once `show` function')
-      const url = getCustomProtocolUrl(process.argv);
+      const storedUrl = localStorage.getItem('url');
+      const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
       log.info('this are the process.argv', + ' ', process.argv)
       log.info('The url at line 71 in the startLoading', url);
       if (url) {
@@ -90,9 +91,10 @@ class WindowManager {
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
     // what if we dont have url cant we just re-run startLoading so we can get the url from it
+    log.info(process.platform, 'process platform')
+    const storedUrl = localStorage.getItem('url');
+    const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
     if (process.platform !== 'darwin') {
-      const storedUrl = localStorage.getItem('url');
-      const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
       log.info("This is the url at line 91 in startApp", url);
       // since the updates make the app quit and re-open we don't get the url here it is undefined
       log.info('this is the url after update preserved in local storage', storedUrl);
@@ -110,8 +112,10 @@ class WindowManager {
   public createMainWindow = (): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
       this.mainWindow = new BrowserWindow(WINDOW_CONFIG.main);
+      log.info('In create main window function')
       this.createBlockOverlayWindow();
       this.mainWindow.once('ready-to-show', () => {
+        log.info('in main window .once ready-to-show')
         this.mainWindow.show();
         importer.setProgressBrowserWindow(this.mainWindow);
         //We set also for the mitchell importer a browser window
@@ -122,6 +126,7 @@ class WindowManager {
         resolve();
       });
       this.mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+        log.info('Failed to load window')
         reject(`Failed to load window: ${errorDescription}`);
       });
       this.mainWindow.on('close', () => {
