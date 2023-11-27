@@ -155,10 +155,10 @@ class Main {
       const { data } = await axios.get<ResponseData>(url);
       this.automationIdToFinishRPA = data.automationIdToFinishRPA;
       this.finalUrl = url;
-      // const existingUrl = localStorage.getItem('url');
-      // if (existingUrl) {
-      //   localStorage.removeItem('url');
-      // }
+      const existingUrl = localStorage.getItem('url');
+      if (existingUrl) {
+        localStorage.removeItem('url');
+      }
       await FirebaseService.setSessionStatus(data.automationId, SessionStatus.APP_STARTED);
 
       /** Do the population (CCC || Mitchell) */

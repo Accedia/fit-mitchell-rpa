@@ -91,13 +91,11 @@ class WindowManager {
     await this.createMainWindow();
     // what if we dont have url cant we just re-run startLoading so we can get the url from it
     if (process.platform !== 'darwin') {
-      // const storedUrl = localStorage.getItem('url');
-      // const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
-      const url = getCustomProtocolUrl(process.argv);
+      const storedUrl = localStorage.getItem('url');
+      const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
       log.info("This is the url at line 91 in startApp", url);
       // since the updates make the app quit and re-open we don't get the url here it is undefined
-      log.info('this is the url after update preserved in local storage', url);
-
+      log.info('this is the url after update preserved in local storage', storedUrl);
       if (url) {
         /**
          * If the app has been opened by pressing the "Commit" button in REV
