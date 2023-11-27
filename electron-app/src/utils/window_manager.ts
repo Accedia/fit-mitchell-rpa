@@ -94,7 +94,7 @@ class WindowManager {
     const storedUrl = store.get('url') as string | null;
     const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
     if (process.platform !== 'darwin') {
-      log.info("This is the url at line 91 in startApp", url);
+      log.info("This is the url at line 91 in startAppp", url);
       // since the updates make the app quit and re-open we don't get the url here it is undefined
       log.info('this is the url after update preserved in local storage', storedUrl);
       if (url) {
