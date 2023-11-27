@@ -155,7 +155,7 @@ class Main {
       const { data } = await axios.get<ResponseData>(url);
       this.automationIdToFinishRPA = data.automationIdToFinishRPA;
       this.finalUrl = url;
-      const existingUrl = store.get('url');
+      const existingUrl = store.get('url') as string | null;
       if (existingUrl) {
         store.delete('url');
       }

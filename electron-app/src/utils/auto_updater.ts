@@ -36,15 +36,14 @@ export class AutoUpdater {
     log.info("Here in checking version - this is the latest version ", latestVersion);
     const shouldUpdate = this.isUpdateAvailable(app.getVersion(), latestVersion);
     log.info("Should update variable " + shouldUpdate);
-    if (shouldUpdate) {
-      store.set('url', url)
-      log.info(store.get('url'));
-      log.info('whole store', store);
-    } else {
+
+    if (!shouldUpdate) {
       this.sendUpdate('No updates found');
       return false;
     }
 
+    store.set('url', url)
+    log.info('this is after setting the url in store', store.get('url'));
     FirebaseService.useCurrentSession.setStatus(SessionStatus.UPDATE_NEEDED);
 
     this.sendUpdate('Downloading update');
