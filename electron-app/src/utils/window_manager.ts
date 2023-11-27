@@ -2,7 +2,7 @@ import { isAppDev, isDev } from './is_dev';
 import { app, BrowserWindow, screen } from 'electron';
 import * as path from 'path';
 import { getCustomProtocolUrl } from './get_custom_protocol_url';
-import { fetchDataAndStartImporter } from '../main';
+import { fetchDataAndStartImporter, store } from '../main';
 import { WINDOW_CONFIG } from '../config/window_config';
 import { MESSAGE, APP_STATE } from '../constants/messages';
 import { AutoUpdater } from './auto_updater';
@@ -67,7 +67,7 @@ class WindowManager {
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
       log.info('in the .once `show` function')
-      const storedUrl = localStorage.getItem('url');
+      const storedUrl = store.get('url') as string;
       const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
       log.info('this are the process.argv', + ' ', process.argv)
       log.info('The url at line 71 in the startLoading', url);
@@ -92,7 +92,7 @@ class WindowManager {
     await this.createMainWindow();
     // what if we dont have url cant we just re-run startLoading so we can get the url from it
     log.info(process.platform, 'process platform')
-    const storedUrl = localStorage.getItem('url');
+    const storedUrl = store.get('url') as string;
     const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
     if (process.platform !== 'darwin') {
       log.info("This is the url at line 91 in startApp", url);
