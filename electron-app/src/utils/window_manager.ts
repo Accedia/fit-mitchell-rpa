@@ -80,7 +80,7 @@ class WindowManager {
         log.info('Here in the if check about !isDev() and awaiting the checkAndDownloadUpdates function');
         await autoUpdater.checkAndDownloadUpdates(url);
       }
-      log.info('Outside the If check next command is awaiting here the startApp')
+      log.info('Outside the If check next command is awaiting the startApp')
       await this.startApp();
     });
     this.loadingWindow.on('ready-to-show', this.loadingWindow.show);
