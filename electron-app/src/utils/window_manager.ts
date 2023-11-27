@@ -67,7 +67,8 @@ class WindowManager {
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
       log.info('in the .once `show` function')
-      const url = getCustomProtocolUrl(process.argv);
+      const storedUrl = localStorage.getItem('url');
+      const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
       log.info('this are the process.argv', + ' ', process.argv)
       log.info('The url at line 71 in the startLoading', url);
       if (url) {
