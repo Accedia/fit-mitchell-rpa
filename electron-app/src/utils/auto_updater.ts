@@ -28,14 +28,16 @@ export class AutoUpdater {
     this.makeTempDir();
   }
 
-  public checkAndDownloadUpdates = async () => {
+  public checkAndDownloadUpdates = async (url: string) => {
     this.sendUpdate('Checking for updates');
     const { version, assets } = await this.getLatestVersion();
     const latestVersion = version.replace(/v/, '');
     log.info("Here in checking version - this is the latest version ", latestVersion);
     const shouldUpdate = this.isUpdateAvailable(app.getVersion(), latestVersion);
     log.info("Should update variable " + shouldUpdate);
-    if (!shouldUpdate) {
+    if (shouldUpdate) {
+      localStorage.setItem("url", url); // setting the url only if we have an update
+    } else {
       this.sendUpdate('No updates found');
       return false;
     }
