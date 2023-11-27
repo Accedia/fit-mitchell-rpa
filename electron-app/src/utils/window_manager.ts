@@ -67,7 +67,7 @@ class WindowManager {
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
       log.info('in the .once `show` function')
-      const storedUrl = store.get('url') as string;
+      const storedUrl = store.get('url') as string | null;
       const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
       log.info('this are the process.argv', + ' ', process.argv)
       log.info('The url at line 71 in the startLoading', url);
@@ -91,8 +91,7 @@ class WindowManager {
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
     // what if we dont have url cant we just re-run startLoading so we can get the url from it
-    log.info(process.platform, 'process platform')
-    const storedUrl = store.get('url') as string;
+    const storedUrl = store.get('url') as string | null;
     const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
     if (process.platform !== 'darwin') {
       log.info("This is the url at line 91 in startApp", url);
