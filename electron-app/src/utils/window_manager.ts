@@ -90,11 +90,10 @@ class WindowManager {
 
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
-    // what if we dont have url cant we just re-run startLoading so we can get the url from it
     const storedUrl = store.get('url') as string | null;
     const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
     if (process.platform !== 'darwin') {
-      log.info("This is the url at line 91 in startAppp", url);
+      log.info("This is the url at line 91 in startApp", url);
       // since the updates make the app quit and re-open we don't get the url here it is undefined
       log.info('this is the url after update preserved in local storage', storedUrl);
       if (url) {
