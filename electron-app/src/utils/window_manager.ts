@@ -66,10 +66,8 @@ class WindowManager {
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
-      log.info('in the .once `show` function')
       const storedUrl = store.get('url') as string | null;
       const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
-      log.info('this are the process.argv', + ' ', process.argv)
       log.info('The url at line 71 in the startLoading', url);
       if (url) {
         const sessionId = extractSessionIdFromUrl(url);
@@ -78,10 +76,8 @@ class WindowManager {
 
       if (!isAppDev(app) && !isDev()) {
         const autoUpdater = new AutoUpdater(this.loadingWindow);
-        log.info('Here in the if check about !isDev() and awaiting the checkAndDownloadUpdates function');
         await autoUpdater.checkAndDownloadUpdates(url);
       }
-      log.info('Outside the If check next command is awaiting the startApp')
       await this.startApp();
     });
     this.loadingWindow.on('ready-to-show', this.loadingWindow.show);
@@ -93,15 +89,11 @@ class WindowManager {
     const storedUrl = store.get('url') as string | null;
     const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
     if (process.platform !== 'darwin') {
-      log.info("This is the url at line 91 in startApp", url);
-      // since the updates make the app quit and re-open we don't get the url here it is undefined
-      log.info('this is the url after update preserved in local storage', storedUrl);
       if (url) {
         /**
          * If the app has been opened by pressing the "Commit" button in REV
          * without the app being opened before that
          */
-        log.info('In start app function before awaiting fetchDataAndStartImporter');
         await fetchDataAndStartImporter(url);
       }
     }
