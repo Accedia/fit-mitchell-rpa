@@ -35,7 +35,6 @@ export class AutoUpdater {
     const latestVersion = version.replace(/v/, '');
     log.info("Here in checking version - this is the latest version ", latestVersion);
     const shouldUpdate = this.isUpdateAvailable(app.getVersion(), latestVersion);
-    log.info("Should update variable " + shouldUpdate);
 
     if (!shouldUpdate) {
       this.sendUpdate('No updates found');

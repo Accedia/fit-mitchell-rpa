@@ -158,6 +158,7 @@ class Main {
       const existingUrl = store.get('url') as string | null;
       if (existingUrl) {
         store.delete('url');
+        log.info('this is after deleting the url from store', store.get('url'));
       }
       await FirebaseService.setSessionStatus(data.automationId, SessionStatus.APP_STARTED);
 
