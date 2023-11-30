@@ -44,6 +44,16 @@ const reducer = (
         ...state,
         isReady: action.payload,
       }
+    case '@SET_IS_SEARCHING_FOR_COMMIT_BUTTON':
+      return {
+        ...state,
+        isSearchingForCommitButton: action.payload
+      }
+    case '@SET_IS_SEARCHING_FOR_MANUAL_LINE_BUTTON':
+      return {
+        ...state,
+        isSearchingForAddLineButton: action.payload
+      }
     default:
       return state;
   }
