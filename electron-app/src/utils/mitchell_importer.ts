@@ -135,20 +135,18 @@ export class Mitchell_Importer extends Importer {
   };
 
   private getButtonCoordinates = async (electronWindow: BrowserWindow, typeButton: MitchellButtons): Promise<Point> => {
-    const buttonCoordinates = typeButton === MitchellButtons.manualLineButton ? await this.checkForButtonCoordinates(MitchellButtons.manualLineButton) : await this.checkForButtonCoordinates(MitchellButtons.commitButton);
+    const buttonCoordinates = typeButton === MitchellButtons.manualLineButton ? await this.checkForButtonCoordinates(MitchellButtons.manualLineButton, electronWindow) : await this.checkForButtonCoordinates(MitchellButtons.commitButton, electronWindow);
 
     if (buttonCoordinates) {
       return buttonCoordinates;
     } else if (this.isRunning) {
       snooze(1000);
       log.warn('Still searching for Mitchell on the main screen. Retrying...');
-      const messageToSendToReact = typeButton === MitchellButtons.manualLineButton ? MESSAGE.SEARCHING_ADD_LINE_BUTTON : MESSAGE.SEARCHING_COMMIT_BUTTON;
-      electronWindow.webContents.send(messageToSendToReact);
       return this.getButtonCoordinates(electronWindow, typeButton);
     }
   };
 
-  private checkForButtonCoordinates = async (typeButton: MitchellButtons): Promise<Point> => {
+  private checkForButtonCoordinates = async (typeButton: MitchellButtons, electronWindow: BrowserWindow): Promise<Point> => {
     const images = typeButton === MitchellButtons.manualLineButton ? fs.readdirSync(this.getMitchellPathForAssets()) : fs.readdirSync(this.getMitchellPathForCommitButton());
     const result: ImageSearchResult = {
       coordinates: null,
@@ -167,6 +165,8 @@ export class Mitchell_Importer extends Importer {
         foundImage = true;
       } catch (err) {
         log.warn('here is error', err)
+        const messageToSendToReact = typeButton === MitchellButtons.manualLineButton ? MESSAGE.SEARCHING_ADD_LINE_BUTTON : MESSAGE.SEARCHING_COMMIT_BUTTON;
+        electronWindow.webContents.send(messageToSendToReact);
         result.errors.push(err);
       }
 
@@ -187,6 +187,7 @@ export class Mitchell_Importer extends Importer {
     if (result.coordinates) {
       return await centerOf(result.coordinates);
     } else {
+
       result.errors.forEach((error) => typeButton === MitchellButtons.manualLineButton ? log.warn('Error finding the Manual Line button', error) : log.warn('Error finding the Commit button', error));
     }
   };
