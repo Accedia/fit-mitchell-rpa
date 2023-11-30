@@ -142,7 +142,8 @@ export class Mitchell_Importer extends Importer {
     } else if (this.isRunning) {
       snooze(1000);
       log.warn('Still searching for Mitchell on the main screen. Retrying...');
-      // electronWindow.webContents.send(MESSAGE.SEARCHING_BUTTON)
+      const messageToSendToReact = typeButton === MitchellButtons.manualLineButton ? MESSAGE.SEARCHING_ADD_LINE_BUTTON : MESSAGE.SEARCHING_COMMIT_BUTTON;
+      electronWindow.webContents.send(messageToSendToReact);
       return this.getButtonCoordinates(electronWindow, typeButton);
     }
   };

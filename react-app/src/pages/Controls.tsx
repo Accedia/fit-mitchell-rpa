@@ -16,7 +16,15 @@ interface ControlsProps {
 const Controls: React.FC<ControlsProps> = ({ onBack }) => {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
-  const { percentage, isRunning, isLoading, isWaitingCcc, isReady } = state;
+  const {
+    percentage,
+    isRunning,
+    isLoading,
+    isWaitingCcc,
+    isReady,
+    isSearchingForCommitButton,
+    isSearchingForAddLineButton,
+  } = state;
   const { addToast } = useToasts();
 
   const resetState = () => {
@@ -54,6 +62,19 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
       ipcRenderer.removeListener(MESSAGE.STOP_IMPORTER_SHORTCUT, stopPopulationStateUpdate);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Handling searching for commit button
+  React.useEffect(() => {
+    const handler = (event: any) => {
+      dispatch({ type: '@SET_IS_SEARCHING_FOR_COMMIT_BUTTON', payload: true });
+    };
+
+    ipcRenderer.on(MESSAGE.SEARCHING_COMMIT_BUTTON, handler);
+
+    return () => {
+      ipcRenderer.removeListener(MESSAGE.SEARCHING_COMMIT_BUTTON, handler);
+    };
   }, []);
 
   React.useEffect(() => {
@@ -95,6 +116,24 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
     return () => {
       ipcRenderer.removeListener(MESSAGE.LOADING_UPDATE, handler);
     };
+  }, []);
+
+  React.useEffect(() => {
+    const handler = (event: any, message: string) => {
+      resetState();
+      dispatch({
+        type: '@SET_IS_RUNNING',
+        payload: false,
+      });
+      addToast(message, { appearance: 'error', autoDismiss: false });
+    };
+
+    ipcRenderer.on(MESSAGE.ERROR, handler);
+
+    return () => {
+      ipcRenderer.removeListener(MESSAGE.ERROR, handler);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -158,6 +197,20 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
                 Detecting Mitchell Estimate window <Dots compact />
               </Message.Header>
               Waiting for you to open Mitchell and put it on your main screen
+            </Message.Content>
+          </Message>
+        </div>
+      );
+    } else if (isSearchingForCommitButton) {
+      return (
+        <div className="loader-container">
+          <Message icon color="blue">
+            <Icon name="circle notched" loading />
+            <Message.Content>
+              <Message.Header>
+                Searching for Commit button <Dots compact />
+              </Message.Header>
+              Ensure that commit button is visible on the screen
             </Message.Content>
           </Message>
         </div>
