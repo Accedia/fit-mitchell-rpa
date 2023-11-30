@@ -6,6 +6,8 @@ export interface ControlsState {
   hasError: boolean;
   isWaitingCcc: boolean;
   isReady: boolean;
+  isSearchingForCommitButton: boolean;
+  isSearchingForAddLineButton: boolean;
 }
 
 export const INITIAL_STATE: ControlsState = {
@@ -16,4 +18,6 @@ export const INITIAL_STATE: ControlsState = {
   hasError: false,
   isWaitingCcc: false,
   isReady: false,
+  isSearchingForCommitButton: false,
+  isSearchingForAddLineButton: false,
 };

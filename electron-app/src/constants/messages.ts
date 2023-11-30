@@ -14,6 +14,8 @@ export const MESSAGE = {
   WAITING_CCC_UPDATE: 'waiting-ccc-update',
   WAITING_MITCHELL_UPDATE: 'waiting-mitchell-update',
   OPEN_MANUAL: 'open-manual',
+  SEARCHING_COMMIT_BUTTON: 'searching-commit-button',
+  SEARCHING_ADD_LINE_BUTTON: 'searching-add-line-button',
 };
 
 export const APP_STATE = {
