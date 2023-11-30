@@ -77,6 +77,19 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
     };
   }, []);
 
+  // Handling searching for add line button
+  React.useEffect(() => {
+    const handler = (event: any, isSearchingForAddLineButton: boolean) => {
+      dispatch({ type: '@SET_IS_SEARCHING_FOR_MANUAL_LINE_BUTTON', payload: isSearchingForAddLineButton });
+    };
+
+    ipcRenderer.on(MESSAGE.SEARCHING_ADD_LINE_BUTTON, handler);
+
+    return () => {
+      ipcRenderer.removeListener(MESSAGE.SEARCHING_ADD_LINE_BUTTON, handler);
+    };
+  }, []);
+
   React.useEffect(() => {
     const handler = (event: any, percentage: number) => {
       const roundedPercentage = +percentage.toFixed(1);
@@ -211,7 +224,22 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
                 Searching for Commit button <Dots compact />
               </Message.Header>
               Ensure that commit button is visible on the screen. Click{' '}
-              <span style={{ fontWeight: 'bold' }}>here</span> to hide this window
+              <span style={{ fontWeight: 'bold', cursor: 'pointer' }}>here</span> to hide this window
+            </Message.Content>
+          </Message>
+        </div>
+      );
+    } else if (isSearchingForAddLineButton) {
+      return (
+        <div className="loader-container">
+          <Message icon color="blue">
+            <Icon name="circle notched" loading />
+            <Message.Content>
+              <Message.Header>
+                Searching for Add Manual line button <Dots compact />
+              </Message.Header>
+              Ensure that Add Manual Line button is visible on the screen. Click{' '}
+              <span style={{ fontWeight: 'bold', cursor: 'pointer' }}>here</span> to hide this window
             </Message.Content>
           </Message>
         </div>
