@@ -66,8 +66,8 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
 
   // Handling searching for commit button
   React.useEffect(() => {
-    const handler = (event: any) => {
-      dispatch({ type: '@SET_IS_SEARCHING_FOR_COMMIT_BUTTON', payload: true });
+    const handler = (event: any, isWaitingForCommitButton: boolean) => {
+      dispatch({ type: '@SET_IS_SEARCHING_FOR_COMMIT_BUTTON', payload: isWaitingForCommitButton });
     };
 
     ipcRenderer.on(MESSAGE.SEARCHING_COMMIT_BUTTON, handler);
@@ -210,7 +210,8 @@ const Controls: React.FC<ControlsProps> = ({ onBack }) => {
               <Message.Header>
                 Searching for Commit button <Dots compact />
               </Message.Header>
-              Ensure that commit button is visible on the screen
+              Ensure that commit button is visible on the screen. Click{' '}
+              <span style={{ fontWeight: 'bold' }}>here</span> to hide this window
             </Message.Content>
           </Message>
         </div>

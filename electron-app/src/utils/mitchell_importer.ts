@@ -136,8 +136,9 @@ export class Mitchell_Importer extends Importer {
 
   private getButtonCoordinates = async (electronWindow: BrowserWindow, typeButton: MitchellButtons): Promise<Point> => {
     const buttonCoordinates = typeButton === MitchellButtons.manualLineButton ? await this.checkForButtonCoordinates(MitchellButtons.manualLineButton, electronWindow) : await this.checkForButtonCoordinates(MitchellButtons.commitButton, electronWindow);
-
     if (buttonCoordinates) {
+      const messageToSendToReact = typeButton === MitchellButtons.manualLineButton ? MESSAGE.SEARCHING_ADD_LINE_BUTTON : MESSAGE.SEARCHING_COMMIT_BUTTON;
+      electronWindow.webContents.send(messageToSendToReact, false);
       return buttonCoordinates;
     } else if (this.isRunning) {
       snooze(1000);
@@ -166,7 +167,7 @@ export class Mitchell_Importer extends Importer {
       } catch (err) {
         log.warn('here is error', err)
         const messageToSendToReact = typeButton === MitchellButtons.manualLineButton ? MESSAGE.SEARCHING_ADD_LINE_BUTTON : MESSAGE.SEARCHING_COMMIT_BUTTON;
-        electronWindow.webContents.send(messageToSendToReact);
+        electronWindow.webContents.send(messageToSendToReact, true);
         result.errors.push(err);
       }
 
