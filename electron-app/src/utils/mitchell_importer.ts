@@ -272,9 +272,10 @@ export class Mitchell_Importer extends Importer {
     await times(count).pressKey(Key.Tab);
   }
 
-  private populateItemized = async (forgettables: MitchellForgettable[],) => {
+  private populateItemized = async (forgettables: MitchellForgettable[]) => {
     for (let i = 0; i < forgettables.length; i++) {
-      const { description, partNumber, quantity, partPrice } = forgettables[i];
+      const { description, partNumber, quantity, partPrice, consumableLineNote } = forgettables[i];
+      console.log(consumableLineNote, 'consumable line note')
       //Type Description and Go to Operation
       await this.typeMitchellValue(description);
       this.progressUpdater.update();
@@ -305,13 +306,19 @@ export class Mitchell_Importer extends Importer {
       await keyboard.releaseKey(Key.Space); // Uncheck Tax
       this.progressUpdater.update();
 
-      await this.pressTabButton(3); // go to 'Add line' button
+      await this.pressTabButton(1); // go to (+More) button
+      await keyboard.pressKey(Key.Enter); // press Add Line with Enter to open Dropdown
+      await keyboard.releaseKey(Key.Enter);
+      await times(6).pressKey(Key.Down); // Select Add New explanation
+      await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
+      await keyboard.releaseKey(Key.Enter);
+      await this.typeMitchellValue(consumableLineNote); // Write the consumableLineNote
+
       await snooze(2000);
+      await this.pressTabButton(4); // go to checkbox Tax
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter
       await keyboard.releaseKey(Key.Enter);
-
       this.progressUpdater.update();
-
       await snooze(2000); // wait until modal is closed
 
       if (i < forgettables.length - 1) {
@@ -321,7 +328,7 @@ export class Mitchell_Importer extends Importer {
   }
 
   private populateBundled = async (forgettables: MitchellForgettable[]) => {
-    const { description, partNumber, partPrice } = forgettables[0]; // if it is bundled we return only one
+    const { description, partNumber, partPrice, consumableLineNote } = forgettables[0]; // if it is bundled we return only one
     await this.typeMitchellValue(description); // type description
     this.progressUpdater.update();
 

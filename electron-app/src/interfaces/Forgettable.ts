@@ -27,4 +27,5 @@ export interface MitchellForgettable {
   type?: 'consumable' | 'specific' | 'general';
   partType?: string;
   rowData: any[];
+  consumableLineNote?: string;
 }

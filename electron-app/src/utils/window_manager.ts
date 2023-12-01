@@ -149,7 +149,7 @@ class WindowManager {
     const [windowWidth] = window.getSize();
 
     window.setAlwaysOnTop(true);
-    window.setPosition(display.bounds.width - windowWidth - 20, 20);
+    window.setPosition(display.bounds.width - windowWidth - 800, 20);
   };
 
   public appStateUpdate = (newState: keyof typeof APP_STATE): void => {
