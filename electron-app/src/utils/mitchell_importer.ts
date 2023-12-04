@@ -31,11 +31,13 @@ export class Mitchell_Importer extends Importer {
   private BUNDLED_QUANTITY: string;
   private BUNDLED_TOTAL_UNITS: string;
   private DEFAULT_QUANTITY: string;
+  private BUNDLED_LINE_NOTE: string;
   constructor() {
     super();
     this.BUNDLED_QUANTITY = "1";
     this.BUNDLED_TOTAL_UNITS = "1";
     this.DEFAULT_QUANTITY = "1";
+    this.BUNDLED_LINE_NOTE = "Shop will provide a detailed invoice along with line documentation to support every product on the invoice, and also P-Page Not Included documentation for all three estimating platforms."
   }
 
   public setMitchellConfig = (inputSpeed: number, isLookingForCommitButton?: boolean): void => {
@@ -315,7 +317,7 @@ export class Mitchell_Importer extends Importer {
       await this.typeMitchellValue(consumableLineNote); // Write the consumableLineNote
 
       await snooze(2000);
-      await this.pressTabButton(4); // go to checkbox Tax
+      await this.pressTabButton(4); // go to Add Line
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter
       await keyboard.releaseKey(Key.Enter);
       this.progressUpdater.update();
@@ -328,7 +330,7 @@ export class Mitchell_Importer extends Importer {
   }
 
   private populateBundled = async (forgettables: MitchellForgettable[]) => {
-    const { description, partNumber, partPrice, consumableLineNote } = forgettables[0]; // if it is bundled we return only one
+    const { description, partNumber, partPrice } = forgettables[0]; // if it is bundled we return only one
     await this.typeMitchellValue(description); // type description
     this.progressUpdater.update();
 
@@ -355,7 +357,16 @@ export class Mitchell_Importer extends Importer {
     await keyboard.pressKey(Key.Space); // Uncheck Tax
     await keyboard.releaseKey(Key.Space); // Uncheck Tax
 
-    await this.pressTabButton(3); // go to add line
+    await this.pressTabButton(1); // go to (+More) button
+    await keyboard.pressKey(Key.Enter); // press More with Enter to open Dropdown
+    await keyboard.releaseKey(Key.Enter);
+    await times(6).pressKey(Key.Down); // Select Add New explanation
+    await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
+    await keyboard.releaseKey(Key.Enter);
+    await this.typeMitchellValue(this.BUNDLED_LINE_NOTE); // Write the default bundled line note
+
+    await snooze(2000);
+    await this.pressTabButton(4); // go to add line
     await keyboard.pressKey(Key.Enter); // press Add Line with Enter
     await keyboard.releaseKey(Key.Enter);
     this.progressUpdater.update();
