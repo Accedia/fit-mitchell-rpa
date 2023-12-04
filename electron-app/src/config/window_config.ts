@@ -29,6 +29,8 @@ export const WINDOW_CONFIG: WindowConfig = {
     height: 265,
     width: 420,
     resizable: false,
+    x: 20,
+    y: 20
   },
   loading: {
     ...COMMON_CONFIG,
@@ -36,6 +38,8 @@ export const WINDOW_CONFIG: WindowConfig = {
     height: 300,
     frame: false,
     backgroundColor: '#ffffff',
+    x: 20,
+    y: 20
   },
   blockOverlay: {
     webPreferences: {
