@@ -53,7 +53,7 @@ export class Mitchell_Importer extends Importer {
     // ! Left only for debug purposes
     // ? Uncomment if needed, do not deploy to prod
     if (isLookingForCommitButton) {
-      screen.config.confidence = 0.98;
+      screen.config.confidence = 0.96;
     }
     // screen.config.autoHighlight = true;
     // screen.config.highlightDurationMs = 3000;
