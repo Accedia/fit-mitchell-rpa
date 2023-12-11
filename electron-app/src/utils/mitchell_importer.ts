@@ -35,7 +35,7 @@ export class Mitchell_Importer extends Importer {
   constructor() {
     super();
     this.BUNDLED_QUANTITY = "1";
-    this.BUNDLED_TOTAL_UNITS = "1";
+    this.BUNDLED_TOTAL_UNITS = "0";
     this.DEFAULT_QUANTITY = "1";
     this.BUNDLED_LINE_NOTE = "Shop will provide a detailed invoice along with line documentation to support every product on the invoice, and also P-Page Not Included documentation for all three estimating platforms."
   }
