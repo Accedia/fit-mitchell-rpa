@@ -37,7 +37,7 @@ export class Mitchell_Importer extends Importer {
     this.BUNDLED_QUANTITY = "1";
     this.BUNDLED_TOTAL_UNITS = "0";
     this.DEFAULT_QUANTITY = "1";
-    this.BUNDLED_LINE_NOTE = "Shop will provide a detailed invoice along with line documentation to support every product on the invoice, and also P-Page Not Included documentation for all three estimating platforms."
+    this.BUNDLED_LINE_NOTE = "Shop will provide a zip folder with an itemized invoice along with all supporting documentation."
   }
 
   public setMitchellConfig = (inputSpeed: number, isLookingForCommitButton?: boolean): void => {
