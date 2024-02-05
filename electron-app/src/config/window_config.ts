@@ -30,7 +30,7 @@ export const WINDOW_CONFIG: WindowConfig = {
     width: 420,
     resizable: false,
     x: 20,
-    y: 20
+    y: 20,
   },
   loading: {
     ...COMMON_CONFIG,
@@ -39,7 +39,7 @@ export const WINDOW_CONFIG: WindowConfig = {
     frame: false,
     backgroundColor: '#ffffff',
     x: 20,
-    y: 20
+    y: 20,
   },
   blockOverlay: {
     webPreferences: {
@@ -52,6 +52,7 @@ export const WINDOW_CONFIG: WindowConfig = {
     transparent: true,
     fullscreen: true,
     show: false,
+    resizable: false,
   },
   manual: {
     ...COMMON_CONFIG,
