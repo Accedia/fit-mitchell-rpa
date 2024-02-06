@@ -429,6 +429,7 @@ export class Mitchell_Importer extends Importer {
     await mouse.setPosition(commitButtonCoordinates);
     await mouse.leftClick();
     this.progressUpdater.update();
+    // logic for searching by image
     // const inputSpeed = getInputSpeed();
     // const inputSpeedSeconds = getInputSpeedInSeconds(inputSpeed);
 
