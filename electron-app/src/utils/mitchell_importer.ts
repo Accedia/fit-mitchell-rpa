@@ -45,15 +45,16 @@ export class Mitchell_Importer extends Importer {
     /** Delay between keystrokes when typing a word (e.g. calling keyboard.type(), time between each letter keypress). */
     keyboard['nativeAdapter'].keyboard.setKeyboardDelay(inputSpeed * 50);
     /** Path with the assets, where we put images for "Manual Line" button image-recognition */
-    // screen.config.resourceDirectory = isLookingForCommitButton
-    //   ? this.getMitchellPathForCommitButton()
-    //   : isLookingForCommitBtnInModal
-    //   ? this.getMitchellPathForCommitButtonInModal()
-    //   : this.getMitchellPathForAssets();
-
     screen.config.resourceDirectory = isLookingForCommitButton
       ? this.getMitchellPathForCommitButton()
-      : this.getMitchellPathForAssets();
+      : isLookingForCommitBtnInModal
+        ? this.getMitchellPathForCommitButtonInModal()
+        : this.getMitchellPathForAssets();
+
+    // screen.config.resourceDirectory = isLookingForCommitButton
+    //   ? this.getMitchellPathForCommitButton()
+    //   : this.getMitchellPathForAssets();
+
     // ! Left only for debug purposes
     // ? Uncomment if needed, do not deploy to prod
     if (isLookingForCommitButton) {
@@ -114,8 +115,8 @@ export class Mitchell_Importer extends Importer {
             );
 
             if (commitButtonCoordinates) {
-              await this.commitMitchellData(commitButtonCoordinates);
-              // await this.commitMitchellData(commitButtonCoordinates, electronWindow);
+              await this.commitMitchellData(commitButtonCoordinates, electronWindow);
+              // await this.commitMitchellData(commitButtonCoordinates);
             } else {
               log.error("Can't find the Commit Button.");
             }
@@ -159,16 +160,16 @@ export class Mitchell_Importer extends Importer {
     electronWindow: BrowserWindow,
     typeButton: MitchellButtons
   ): Promise<Point> => {
-    const buttonCoordinates =
-      typeButton === MitchellButtons.manualLineButton
-        ? await this.checkForButtonCoordinates(MitchellButtons.manualLineButton, electronWindow)
-        : await this.checkForButtonCoordinates(MitchellButtons.commitButton, electronWindow);
     // const buttonCoordinates =
     //   typeButton === MitchellButtons.manualLineButton
     //     ? await this.checkForButtonCoordinates(MitchellButtons.manualLineButton, electronWindow)
-    //     : typeButton === MitchellButtons.commitButton
-    //     ? await this.checkForButtonCoordinates(MitchellButtons.commitButton, electronWindow)
-    //     : await this.checkForButtonCoordinates(MitchellButtons.commitButtonInModal, electronWindow);
+    //     : await this.checkForButtonCoordinates(MitchellButtons.commitButton, electronWindow);
+    const buttonCoordinates =
+      typeButton === MitchellButtons.manualLineButton
+        ? await this.checkForButtonCoordinates(MitchellButtons.manualLineButton, electronWindow)
+        : typeButton === MitchellButtons.commitButton
+          ? await this.checkForButtonCoordinates(MitchellButtons.commitButton, electronWindow)
+          : await this.checkForButtonCoordinates(MitchellButtons.commitButtonInModal, electronWindow);
     if (buttonCoordinates) {
       const messageToSendToReact =
         typeButton === MitchellButtons.manualLineButton
@@ -187,16 +188,16 @@ export class Mitchell_Importer extends Importer {
     typeButton: MitchellButtons,
     electronWindow: BrowserWindow
   ): Promise<Point> => {
-    const images =
-      typeButton === MitchellButtons.manualLineButton
-        ? fs.readdirSync(this.getMitchellPathForAssets())
-        : fs.readdirSync(this.getMitchellPathForCommitButton());
     // const images =
     //   typeButton === MitchellButtons.manualLineButton
     //     ? fs.readdirSync(this.getMitchellPathForAssets())
-    //     : typeButton === MitchellButtons.commitButton
-    //     ? fs.readdirSync(this.getMitchellPathForCommitButton())
-    //     : fs.readdirSync(this.getMitchellPathForCommitButtonInModal());
+    //     : fs.readdirSync(this.getMitchellPathForCommitButton());
+    const images =
+      typeButton === MitchellButtons.manualLineButton
+        ? fs.readdirSync(this.getMitchellPathForAssets())
+        : typeButton === MitchellButtons.commitButton
+          ? fs.readdirSync(this.getMitchellPathForCommitButton())
+          : fs.readdirSync(this.getMitchellPathForCommitButtonInModal());
     const result: ImageSearchResult = {
       coordinates: null,
       errors: [],
@@ -425,32 +426,34 @@ export class Mitchell_Importer extends Importer {
     await snooze(4000); // wait until modal is closed
   };
 
-  private commitMitchellData = async (commitButtonCoordinates: Point) => {
+  private commitMitchellData = async (commitButtonCoordinates: Point, electronWindow: BrowserWindow) => {
     await mouse.setPosition(commitButtonCoordinates);
     await mouse.leftClick();
     this.progressUpdater.update();
     // logic for searching by image
-    // const inputSpeed = getInputSpeed();
-    // const inputSpeedSeconds = getInputSpeedInSeconds(inputSpeed);
+    const inputSpeed = getInputSpeed();
+    const inputSpeedSeconds = getInputSpeedInSeconds(inputSpeed);
 
-    // this.setMitchellConfig(inputSpeedSeconds, false, true);
+    this.setMitchellConfig(inputSpeedSeconds, false, true);
     await snooze(6000);
-    await this.pressTabButton(3);
-    this.progressUpdater.update();
-    await this.pressTabButton(3);
-    this.progressUpdater.update();
-    await keyboard.pressKey(Key.Enter);
-    await keyboard.releaseKey(Key.Enter);
-    this.progressUpdater.setPercentage(100);
-    // const coordinatesOfButtonInModal = await this.getButtonCoordinates(
-    //   electronWindow,
-    //   MitchellButtons.commitButtonInModal
-    // );
-    // if (coordinatesOfButtonInModal) {
-    //   await mouse.setPosition(coordinatesOfButtonInModal);
-    //   await mouse.leftClick();
-    //   this.progressUpdater.setPercentage(100);
-    // }
+
+    //logic for pressing tabs and etc to reach commit button in modal
+    // await this.pressTabButton(3);
+    // this.progressUpdater.update();
+    // await this.pressTabButton(3);
+    // this.progressUpdater.update();
+    // await keyboard.pressKey(Key.Enter);
+    // await keyboard.releaseKey(Key.Enter);
+    // this.progressUpdater.setPercentage(100);
+    const coordinatesOfButtonInModal = await this.getButtonCoordinates(
+      electronWindow,
+      MitchellButtons.commitButtonInModal
+    );
+    if (coordinatesOfButtonInModal) {
+      await mouse.setPosition(coordinatesOfButtonInModal);
+      await mouse.leftClick();
+      this.progressUpdater.setPercentage(100);
+    }
   };
 }
 
