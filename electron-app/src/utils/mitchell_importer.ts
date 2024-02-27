@@ -356,12 +356,9 @@ export class Mitchell_Importer extends Importer {
       await this.typeMitchellValue(partPrice); // type totalPrice;
       this.progressUpdater.update();
 
-      await this.pressTabButton(1); // go to checkbox Tax
-      await keyboard.pressKey(Key.Space); // Uncheck Tax
-      await keyboard.releaseKey(Key.Space); // Uncheck Tax
+      await this.pressTabButton(2); // go to (+More) button
       this.progressUpdater.update();
 
-      await this.pressTabButton(1); // go to (+More) button
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter to open Dropdown
       await keyboard.releaseKey(Key.Enter);
       await times(6).pressKey(Key.Down); // Select Add New explanation
@@ -374,7 +371,7 @@ export class Mitchell_Importer extends Importer {
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter
       await keyboard.releaseKey(Key.Enter);
       this.progressUpdater.update();
-      await snooze(2000); // wait until modal is closed
+      await snooze(6000); // wait until modal is closed
 
       if (i < forgettables.length - 1) {
         await mouse.leftClick(); // open the modal again for the next line
@@ -406,11 +403,8 @@ export class Mitchell_Importer extends Importer {
     await this.typeMitchellValue(partPrice); // Type Total Price calculated in our back-end
     this.progressUpdater.update();
 
-    await this.pressTabButton(1); // go to checkbox Tax
-    await keyboard.pressKey(Key.Space); // Uncheck Tax
-    await keyboard.releaseKey(Key.Space); // Uncheck Tax
+    await this.pressTabButton(2); // go to (+More) button
 
-    await this.pressTabButton(1); // go to (+More) button
     await keyboard.pressKey(Key.Enter); // press More with Enter to open Dropdown
     await keyboard.releaseKey(Key.Enter);
     await times(6).pressKey(Key.Down); // Select Add New explanation
