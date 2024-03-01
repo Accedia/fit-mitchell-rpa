@@ -48,8 +48,8 @@ export class Mitchell_Importer extends Importer {
     screen.config.resourceDirectory = isLookingForCommitButton
       ? this.getMitchellPathForCommitButton()
       : isLookingForCommitBtnInModal
-        ? this.getMitchellPathForCommitButtonInModal()
-        : this.getMitchellPathForAssets();
+      ? this.getMitchellPathForCommitButtonInModal()
+      : this.getMitchellPathForAssets();
 
     // screen.config.resourceDirectory = isLookingForCommitButton
     //   ? this.getMitchellPathForCommitButton()
@@ -109,26 +109,25 @@ export class Mitchell_Importer extends Importer {
             await this.populateMitchellTableData(forgettables, selectedTypeForCommit);
             this.setMitchellConfig(inputSpeedSeconds, true);
             await snooze(5000);
-            const commitButtonCoordinates = await this.getButtonCoordinates(
-              electronWindow,
-              MitchellButtons.commitButton
-            );
+            // const commitButtonCoordinates = await this.getButtonCoordinates(
+            //   electronWindow,
+            //   MitchellButtons.commitButton
+            // );
 
-            if (commitButtonCoordinates) {
-              await this.commitMitchellData(commitButtonCoordinates, electronWindow);
-              // await this.commitMitchellData(commitButtonCoordinates);
-            } else {
-              log.error("Can't find the Commit Button.");
-            }
-
+            // if (commitButtonCoordinates) {
+            //   await this.commitMitchellData(commitButtonCoordinates, electronWindow);
+            //   // await this.commitMitchellData(commitButtonCoordinates);
+            // } else {
+            //   log.error("Can't find the Commit Button.");
+            // }
+            this.progressUpdater.setPercentage(100);
             await FirebaseService.useCurrentSession.setStatus(SessionStatus.VALIDATING);
+            await FirebaseService.useCurrentSession.setStatus(SessionStatus.COMPLETED);
+            this.complete(automationIdToFinishRPA, url);
             // await this.verifyPopulation(forgettables);
           } else {
             electronWindow.webContents.send(MESSAGE.RESET_CONTROLS_STATE, false);
           }
-
-          await FirebaseService.useCurrentSession.setStatus(SessionStatus.COMPLETED);
-          this.complete(automationIdToFinishRPA, url);
         }
       }
 
@@ -168,8 +167,8 @@ export class Mitchell_Importer extends Importer {
       typeButton === MitchellButtons.manualLineButton
         ? await this.checkForButtonCoordinates(MitchellButtons.manualLineButton, electronWindow)
         : typeButton === MitchellButtons.commitButton
-          ? await this.checkForButtonCoordinates(MitchellButtons.commitButton, electronWindow)
-          : await this.checkForButtonCoordinates(MitchellButtons.commitButtonInModal, electronWindow);
+        ? await this.checkForButtonCoordinates(MitchellButtons.commitButton, electronWindow)
+        : await this.checkForButtonCoordinates(MitchellButtons.commitButtonInModal, electronWindow);
     if (buttonCoordinates) {
       const messageToSendToReact =
         typeButton === MitchellButtons.manualLineButton
@@ -196,8 +195,8 @@ export class Mitchell_Importer extends Importer {
       typeButton === MitchellButtons.manualLineButton
         ? fs.readdirSync(this.getMitchellPathForAssets())
         : typeButton === MitchellButtons.commitButton
-          ? fs.readdirSync(this.getMitchellPathForCommitButton())
-          : fs.readdirSync(this.getMitchellPathForCommitButtonInModal());
+        ? fs.readdirSync(this.getMitchellPathForCommitButton())
+        : fs.readdirSync(this.getMitchellPathForCommitButtonInModal());
     const result: ImageSearchResult = {
       coordinates: null,
       errors: [],
