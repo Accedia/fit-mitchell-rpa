@@ -5,7 +5,7 @@ const iconPath = path.resolve(__dirname, './assets/icon-white-bg.ico');
 
 module.exports = {
   packagerConfig: {
-    arch: 'x64',
+    arch: ['ia32', 'x64'],
     platform: 'win32',
     dir: '.',
     out: 'release-app',
