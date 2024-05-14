@@ -113,6 +113,7 @@ export class Importer {
     const { forgettables, automationId, automationIdToFinishRPA } = data;
 
     this.startSession(automationId);
+    
     this.start();
     const inputSpeed = getInputSpeed();
     const inputSpeedSeconds = getInputSpeedInSeconds(inputSpeed);
