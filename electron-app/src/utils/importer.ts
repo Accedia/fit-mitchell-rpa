@@ -3,17 +3,17 @@ import { ImporterStoppedException } from './importer_stopped_exception';
 import { EstimateColumns } from './../constants/estimate_columns';
 import { ResponseData } from './../interfaces/ResponseData';
 import fs from 'fs';
-import {
-  Key,
-  keyboard,
-  mouse,
-  screen,
-  centerOf,
-  Point,
-  Region,
-  getActiveWindow,
-  sleep,
-} from '@nut-tree/nut-js';
+// import {
+//   Key,
+//   keyboard,
+//   mouse,
+//   screen,
+//   centerOf,
+//   Point,
+//   Region,
+//   getActiveWindow,
+//   sleep,
+// } from '';
 import { BrowserWindow, clipboard } from 'electron';
 import { getInputSpeed, mainWindowManager } from '../main';
 import { MESSAGE } from '../constants/messages';
@@ -29,6 +29,16 @@ import { isDev } from './is_dev';
 import ProgressUpdater from './progress_updater';
 import { getPartNumTabIndex, getPartTypeOptionIndex, getPartTypeTabIndex } from './part_type_utils';
 import axios from 'axios';
+import {
+  Region, Key,
+  keyboard,
+  mouse,
+  screen,
+  centerOf,
+  Point,
+  getActiveWindow,
+  sleep,
+} from 'test-fork-nutjs';
 
 export interface ImageSearchResult {
   coordinates: Region | null;
@@ -113,7 +123,7 @@ export class Importer {
     const { forgettables, automationId, automationIdToFinishRPA } = data;
 
     this.startSession(automationId);
-    
+
     this.start();
     const inputSpeed = getInputSpeed();
     const inputSpeedSeconds = getInputSpeedInSeconds(inputSpeed);
