@@ -67,8 +67,8 @@ class WindowManager {
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
       const storedUrl = store.get('url') as string | null;
-      const newStoredUrl = storedUrl.replace('https//', 'https://');
-      const url = storedUrl ? newStoredUrl : getCustomProtocolUrl(process.argv);
+      const newStoredUrl = typeof storedUrl === 'string' ? storedUrl.replace('https//', 'https://') : null;
+      const url = newStoredUrl || getCustomProtocolUrl(process.argv);
       if (url) {
         const sessionId = extractSessionIdFromUrl(url);
         FirebaseService.useCurrentSession.set(sessionId);
@@ -87,8 +87,8 @@ class WindowManager {
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
     const storedUrl = store.get('url') as string | null;
-    const newStoredUrl = storedUrl.replace('https//', 'https://');
-    const url = storedUrl ? newStoredUrl : getCustomProtocolUrl(process.argv);
+    const newStoredUrl = typeof storedUrl === 'string' ? storedUrl.replace('https//', 'https://') : null;
+    const url = newStoredUrl || getCustomProtocolUrl(process.argv);
     if (process.platform !== 'darwin') {
       if (url) {
         /**

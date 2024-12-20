@@ -365,16 +365,20 @@ export class Mitchell_Importer extends Importer {
 
       await this.pressTabButton(2); // go to (+More) button
       this.progressUpdater.update();
+      await snooze(3000)
 
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter to open Dropdown
       await keyboard.releaseKey(Key.Enter);
-      await snooze(250)
+      await snooze(3000)
 
 
-      await times(6).pressKey(Key.Down); // Select Add New explanation
+      await times(4).pressKey(Key.Down); // Select Add New explanation
+      await snooze(550)
+
       await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
       await keyboard.releaseKey(Key.Enter);
       await this.typeMitchellValue(consumableLineNote); // Write the consumableLineNote
+      await snooze(550)
 
       await this.pressTabButton(4); // go to Add Line
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter
