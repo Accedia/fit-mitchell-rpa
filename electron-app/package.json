@@ -2,7 +2,7 @@
   "name": "fit-mitchell-rpa",
   "appname": "REV Import Technology",
   "productName": "REV Import Technology",
-  "version": "1.5.81",
+  "version": "1.5.83",
   "homepage": "./",
   "main": "./dist/main.js",
   "description": "Automation for CCC by FIT",
@@ -48,7 +48,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@nut-tree/nut-js": "^1.7.0",
+    "test-fork-nutjs": "^1.7.3",
     "axios": "^0.21.1",
     "concurrently": "^6.2.0",
     "electron-log": "^4.4.1",

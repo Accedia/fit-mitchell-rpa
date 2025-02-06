@@ -67,11 +67,16 @@ class WindowManager {
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
-      console.log('loading has started this is on show');
+      log.info('loading has started this is on show');
       const storedUrl = store.get('url') as string | null;
-      console.log('storedUrl at line 70,', storedUrl);
-      const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
+      log.info('storedUrl at line 70,', storedUrl);
+
+
+      const newStoredUrl = storedUrl.replace('https//', 'https://');
+      log.info('new',newStoredUrl);
+      const url = storedUrl ? newStoredUrl : getCustomProtocolUrl(process.argv);
       log.info('The url at line 71 in the startLoading', url);
+
       if (url) {
         const sessionId = extractSessionIdFromUrl(url);
         FirebaseService.useCurrentSession.set(sessionId);
@@ -91,7 +96,8 @@ class WindowManager {
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
     const storedUrl = store.get('url') as string | null;
-    const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
+    const newStoredUrl = storedUrl.replace('https//', 'https://');
+    const url = storedUrl ? newStoredUrl : getCustomProtocolUrl(process.argv);
     if (process.platform !== 'darwin') {
       if (url) {
         /**
