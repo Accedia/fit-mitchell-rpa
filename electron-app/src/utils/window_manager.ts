@@ -63,10 +63,13 @@ class WindowManager {
   };
 
   public startLoading = (): void => {
+    console.log("starting loading");
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
+      console.log('loading has started this is on show');
       const storedUrl = store.get('url') as string | null;
+      console.log('storedUrl at line 70,', storedUrl);
       const url = storedUrl ? storedUrl : getCustomProtocolUrl(process.argv);
       log.info('The url at line 71 in the startLoading', url);
       if (url) {
@@ -75,6 +78,7 @@ class WindowManager {
       }
 
       if (!isAppDev(app) && !isDev()) {
+        console.log('here in auto updater');
         const autoUpdater = new AutoUpdater(this.loadingWindow);
         await autoUpdater.checkAndDownloadUpdates(url);
       }
