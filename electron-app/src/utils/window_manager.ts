@@ -95,9 +95,15 @@ class WindowManager {
 
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
+    log.info('loading has started this is on show');
     const storedUrl = store.get('url') as string | null;
-    const newStoredUrl = storedUrl.replace('https//', 'https://');
-    const url = storedUrl ? newStoredUrl : getCustomProtocolUrl(process.argv);
+    log.info('storedUrl at line 70,', storedUrl);
+
+    const newStoredUrl = storedUrl?.replace('https//', 'https://') ?? null;
+    log.info('new', newStoredUrl);
+
+    const url = newStoredUrl || getCustomProtocolUrl(process.argv);
+    log.info('The url at line 71 in the startLoading', url);
     if (process.platform !== 'darwin') {
       if (url) {
         /**
