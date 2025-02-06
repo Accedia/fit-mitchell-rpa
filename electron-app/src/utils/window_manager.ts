@@ -63,18 +63,27 @@ class WindowManager {
   };
 
   public startLoading = (): void => {
+    console.log("starting loading");
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
+      log.info('loading has started this is on show');
       const storedUrl = store.get('url') as string | null;
+      log.info('storedUrl at line 70,', storedUrl);
+
+
       const newStoredUrl = storedUrl.replace('https//', 'https://');
+      log.info('new',newStoredUrl);
       const url = storedUrl ? newStoredUrl : getCustomProtocolUrl(process.argv);
+      log.info('The url at line 71 in the startLoading', url);
+
       if (url) {
         const sessionId = extractSessionIdFromUrl(url);
         FirebaseService.useCurrentSession.set(sessionId);
       }
 
       if (!isAppDev(app) && !isDev()) {
+        console.log('here in auto updater');
         const autoUpdater = new AutoUpdater(this.loadingWindow);
         await autoUpdater.checkAndDownloadUpdates(url);
       }
