@@ -71,10 +71,10 @@ class WindowManager {
       const storedUrl = store.get('url') as string | null;
       log.info('storedUrl at line 70,', storedUrl);
 
+      const newStoredUrl = storedUrl?.replace('https//', 'https://') ?? null;
+      log.info('new', newStoredUrl);
 
-      const newStoredUrl = storedUrl.replace('https//', 'https://');
-      log.info('new',newStoredUrl);
-      const url = storedUrl ? newStoredUrl : getCustomProtocolUrl(process.argv);
+      const url = newStoredUrl || getCustomProtocolUrl(process.argv);
       log.info('The url at line 71 in the startLoading', url);
 
       if (url) {
