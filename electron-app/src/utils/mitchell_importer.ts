@@ -371,7 +371,7 @@ export class Mitchell_Importer extends Importer {
       await snooze(250)
 
 
-      await times(6).pressKey(Key.Down); // Select Add New explanation
+      await times(4).pressKey(Key.Down); // Select Add New explanation
       await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
       await keyboard.releaseKey(Key.Enter);
       await this.typeMitchellValue(consumableLineNote); // Write the consumableLineNote
@@ -401,7 +401,7 @@ export class Mitchell_Importer extends Importer {
     await times(2).pressKey(Key.Down); // Selecting Part Type to be Aftermarket New
     await keyboard.pressKey(Key.Enter); // Select it
     await keyboard.releaseKey(Key.Enter); // Select it
-    await snooze(2000);
+    await snooze(3500);
     this.progressUpdater.update();
 
     await this.pressTabButton(7); // focus again on the Part number
@@ -418,7 +418,7 @@ export class Mitchell_Importer extends Importer {
 
     await keyboard.pressKey(Key.Enter); // press More with Enter to open Dropdown
     await keyboard.releaseKey(Key.Enter);
-    await times(6).pressKey(Key.Down); // Select Add New explanation
+    await times(4).pressKey(Key.Down); // Select Add New explanation
     await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
     await keyboard.releaseKey(Key.Enter);
     await this.typeMitchellValue(this.BUNDLED_LINE_NOTE); // Write the default bundled line note
