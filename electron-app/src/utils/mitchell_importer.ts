@@ -340,7 +340,14 @@ export class Mitchell_Importer extends Importer {
       await keyboard.releaseKey(Key.Enter);
       await snooze(250);
 
-      await this.pressTabButton(7); // focus again on the Part number
+      await keyboard.pressKey(Key.LeftShift); // Hold Left Shift
+
+      for (let i = 0; i < 7; i++) {
+        await keyboard.pressKey(Key.Tab);
+        await keyboard.releaseKey(Key.Tab);
+      }
+
+      await keyboard.releaseKey(Key.LeftShift); // Release Left Shift
       await this.typeMitchellValue(partNumber); // Type Part Number
       this.progressUpdater.update();
       await snooze(250)
@@ -403,8 +410,16 @@ export class Mitchell_Importer extends Importer {
     await keyboard.releaseKey(Key.Enter); // Select it
     await snooze(2000);
     this.progressUpdater.update();
+    console.log('builded succesfully');
+    // await this.pressTabButton(7); // focus again on the Part number
+    await keyboard.pressKey(Key.LeftShift); // Hold Left Shift
 
-    await this.pressTabButton(7); // focus again on the Part number
+    for (let i = 0; i < 7; i++) {
+      await keyboard.pressKey(Key.Tab);
+      await keyboard.releaseKey(Key.Tab);
+    }
+
+    await keyboard.releaseKey(Key.LeftShift); // Release Left Shift
     await this.typeMitchellValue(partNumber); // Type Part Number
     this.progressUpdater.update();
     await this.pressTabButton(1); // Go to Quantity
