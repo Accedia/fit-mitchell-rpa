@@ -1,5 +1,5 @@
 import { isAppDev, isDev } from './is_dev';
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, shell } from 'electron';
 import * as path from 'path';
 import { getCustomProtocolUrl } from './get_custom_protocol_url';
 import { fetchDataAndStartImporter, store } from '../main';
@@ -55,7 +55,6 @@ class WindowManager {
     if (isDev()) {
       this.loadingWindow.loadURL(`${this.devUrl}#${this.paths.loading}`);
     } else {
-
       this.loadingWindow.loadFile(this.prodUrl, {
         hash: this.paths.loading,
       });
@@ -63,7 +62,7 @@ class WindowManager {
   };
 
   public startLoading = (): void => {
-    console.log("starting loading");
+    console.log('starting loading');
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
@@ -92,9 +91,13 @@ class WindowManager {
     this.loadingWindow.on('ready-to-show', this.loadingWindow.show);
   };
 
-
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
+    if (process && process.argv.some((url) => url.includes('openVBS'))) {
+      shell.openPath('C:\\FIT.vbs');
+      app.quit();
+      return;
+    }
     log.info('loading has started this is on show');
     const storedUrl = store.get('url') as string | null;
     log.info('storedUrl at line 70,', storedUrl);
@@ -118,10 +121,10 @@ class WindowManager {
   public createMainWindow = (): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
       this.mainWindow = new BrowserWindow(WINDOW_CONFIG.main);
-      log.info('In create main window function')
+      log.info('In create main window function');
       this.createBlockOverlayWindow();
       this.mainWindow.once('ready-to-show', () => {
-        log.info('in main window .once ready-to-show')
+        log.info('in main window .once ready-to-show');
         this.mainWindow.show();
         importer.setProgressBrowserWindow(this.mainWindow);
         //We set also for the mitchell importer a browser window
@@ -132,7 +135,7 @@ class WindowManager {
         resolve();
       });
       this.mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
-        log.info('Failed to load window')
+        log.info('Failed to load window');
         reject(`Failed to load window: ${errorDescription}`);
       });
       this.mainWindow.on('close', () => {
@@ -146,7 +149,6 @@ class WindowManager {
       } else {
         this.mainWindow.loadFile(this.prodUrl);
       }
-
     });
   };
 

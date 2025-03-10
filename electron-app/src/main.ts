@@ -1,5 +1,5 @@
 import { ResponseData } from './interfaces/ResponseData';
-import { app, globalShortcut, ipcMain } from 'electron';
+import { app, globalShortcut, ipcMain, shell } from 'electron';
 import WindowManager from './utils/window_manager';
 import importer from './utils/importer';
 import { MESSAGE } from './constants/messages';
@@ -59,6 +59,11 @@ class Main {
       // locally we enter here though
       app.on('second-instance', async (e, argv) => {
         const url = getCustomProtocolUrl(argv);
+        if (argv.some((url) => url.includes('openVBS'))) {
+          shell.openPath('C:\\FIT.vbs');
+          app.quit();
+          return;
+        }
         this.finalUrl = url;
         if (this.windowManager.mainWindow) {
           /**
@@ -74,7 +79,6 @@ class Main {
           log.debug('It seems we need this');
           await this.windowManager.createMainWindow();
         }
-
         if (url) {
           // ? Is this snooze necessary, check if it causes problems
           // await snooze(1500);
@@ -84,14 +88,13 @@ class Main {
     }
   };
 
-
   private stopMitchell = async () => {
     log.info('In stop mitchell function');
     // In dev we're not getting the finalUrl for some reason
     log.info('Final Protocol URL:', this.finalUrl);
-    log.info('Final automationIdToFinishRPA', this.automationIdToFinishRPA)
-    await mitchell_importer.abort(this.automationIdToFinishRPA, this.finalUrl)
-    app.quit()
+    log.info('Final automationIdToFinishRPA', this.automationIdToFinishRPA);
+    await mitchell_importer.abort(this.automationIdToFinishRPA, this.finalUrl);
+    app.quit();
   };
   private registerMainListeners = () => {
     ipcMain.on(MESSAGE.STOP_IMPORTER, this.stopMitchell);
