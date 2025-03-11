@@ -60,7 +60,7 @@ class Main {
       app.on('second-instance', async (e, argv) => {
         const url = getCustomProtocolUrl(argv);
         if (argv.some((url) => url.includes('openVBS'))) {
-          shell.openPath('C:\\FIT.vbs');
+          shell.openPath('C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
           app.quit();
           return;
         }
