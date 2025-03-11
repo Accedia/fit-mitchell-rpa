@@ -66,9 +66,9 @@ class WindowManager {
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
-      log.info('VBS URL', process.argv);
+      console.log('VBS URL', process.argv);
       if (process && process.argv.some((url) => url.includes('openVBS'))) {
-        shell.openPath('C:\\FIT.vbs');
+        shell.openPath('C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
         app.quit();
         return;
       }
