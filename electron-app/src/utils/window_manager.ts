@@ -66,6 +66,12 @@ class WindowManager {
     this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
+      console.log('VBS URL', process.argv);
+      if (process && process.argv.some((url) => url.includes('openVBS'))) {
+        shell.openPath('C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
+        app.quit();
+        return;
+      }
       log.info('loading has started this is on show');
       const storedUrl = store.get('url') as string | null;
       log.info('storedUrl at line 70,', storedUrl);
@@ -93,11 +99,7 @@ class WindowManager {
 
   public startApp = async (): Promise<void> => {
     await this.createMainWindow();
-    if (process && process.argv.some((url) => url.includes('openVBS'))) {
-      shell.openPath('C:\\FIT.vbs');
-      app.quit();
-      return;
-    }
+    log.info('VBS URL - 2', process.argv);
     log.info('loading has started this is on show');
     const storedUrl = store.get('url') as string | null;
     log.info('storedUrl at line 70,', storedUrl);
