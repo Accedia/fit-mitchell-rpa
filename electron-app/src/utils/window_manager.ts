@@ -11,10 +11,7 @@ import { FirebaseService } from './firebase';
 import { extractSessionIdFromUrl } from './extract_sessionid_from_url';
 import mitchell_importer from './mitchell_importer';
 import log from 'electron-log';
-import os from 'os';
 import { spawn } from 'child_process';
-
-const downloadFolderPath = path.join(os.homedir(), 'Downloads', 'FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
 
 type MaybeBrowserWindow = BrowserWindow | null;
 
@@ -79,14 +76,14 @@ class WindowManager {
       console.log('VBS URL', process.argv);
       if (shouldOpenVBS) {
         try {
-          const bat = spawn(downloadFolderPath, [], { windowsHide: true });
+          const bat = spawn('C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat', [], { windowsHide: true });
           bat.on('close', (code) => {
             console.log(`Child process exited with code ${code}`);
             app.quit();
           });
           return;
         } catch (error) {
-          dialog.showErrorBox('Error', 'The specified file was not found: Downloads\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
+          dialog.showErrorBox('Error', 'The specified file was not found: C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
         }
       }
       log.info('loading has started this is on show');
