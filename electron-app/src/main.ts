@@ -13,11 +13,9 @@ import { isAppDev, isDev } from './utils/is_dev';
 import log from 'electron-log';
 import { FirebaseService, SessionStatus } from './utils/firebase';
 import mitchell_importer from './utils/mitchell_importer';
-import os from 'os';
 import { spawn } from 'child_process';
 
 const INPUT_SPEED_STORAGE_KEY = 'inputSpeed';
-const downloadFolderPath = path.join(os.homedir(), 'Downloads', 'FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
 
 if (isDev() && isAppDev(app)) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -64,14 +62,14 @@ class Main {
         const url = getCustomProtocolUrl(argv);
         if (argv.some((url) => url.includes('openVBS'))) {
           try {
-            const bat = spawn(downloadFolderPath, [], { windowsHide: true });
+            const bat = spawn('C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat', [], { windowsHide: true });
             bat.on('close', (code) => {
             log.info(`Child process exited with code ${code}`);
               app.quit();
             });
             return;
           } catch (error) {
-            dialog.showErrorBox('Error', 'The specified file was not found: Downloads\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
+            dialog.showErrorBox('Error', 'The specified file was not found: C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
           }
         }
         this.finalUrl = url;
