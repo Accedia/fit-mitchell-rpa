@@ -1,5 +1,5 @@
 import { isAppDev, isDev } from './is_dev';
-import { app, BrowserWindow, screen, shell } from 'electron';
+import { app, BrowserWindow, screen, shell, dialog } from 'electron';
 import * as path from 'path';
 import { getCustomProtocolUrl } from './get_custom_protocol_url';
 import { fetchDataAndStartImporter, store } from '../main';
@@ -11,6 +11,10 @@ import { FirebaseService } from './firebase';
 import { extractSessionIdFromUrl } from './extract_sessionid_from_url';
 import mitchell_importer from './mitchell_importer';
 import log from 'electron-log';
+import os from 'os';
+import { spawn } from 'child_process';
+
+const downloadFolderPath = path.join(os.homedir(), 'Downloads', 'FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
 
 type MaybeBrowserWindow = BrowserWindow | null;
 
@@ -63,14 +67,27 @@ class WindowManager {
 
   public startLoading = (): void => {
     console.log('starting loading');
-    this.loadingWindow = new BrowserWindow(WINDOW_CONFIG.loading);
+    const shouldOpenVBS = process && process.argv.some((url) => url.includes('openVBS'))
+    this.loadingWindow = new BrowserWindow({...WINDOW_CONFIG.loading, 
+      show: shouldOpenVBS ? false : true
+    });
+    if(shouldOpenVBS){
+      this.loadingWindow.minimize();
+    }
     this.loadLoadingWindowContent();
     this.loadingWindow.once('show', async () => {
       console.log('VBS URL', process.argv);
-      if (process && process.argv.some((url) => url.includes('openVBS'))) {
-        shell.openPath('C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
-        app.quit();
-        return;
+      if (shouldOpenVBS) {
+        try {
+          const bat = spawn(downloadFolderPath, [], { windowsHide: true });
+          bat.on('close', (code) => {
+            console.log(`Child process exited with code ${code}`);
+            app.quit();
+          });
+          return;
+        } catch (error) {
+          dialog.showErrorBox('Error', 'The specified file was not found: Downloads\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
+        }
       }
       log.info('loading has started this is on show');
       const storedUrl = store.get('url') as string | null;
