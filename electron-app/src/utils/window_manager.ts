@@ -12,6 +12,10 @@ import { extractSessionIdFromUrl } from './extract_sessionid_from_url';
 import mitchell_importer from './mitchell_importer';
 import log from 'electron-log';
 import { spawn } from 'child_process';
+import * as os from 'os';
+
+const userHomeDir = os.homedir();
+const fitMitchellCloudPath = path.join(userHomeDir, 'AppData', 'Local', 'FIT-Mitchell_Cloud', 'FIT.bat');
 
 type MaybeBrowserWindow = BrowserWindow | null;
 
@@ -76,7 +80,7 @@ class WindowManager {
       console.log('VBS URL', process.argv);
       if (shouldOpenVBS) {
         try {
-          const bat = spawn('C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat', [], { windowsHide: true });
+          const bat = spawn(fitMitchellCloudPath, [], { windowsHide: true });
           bat.on('close', (code) => {
             console.log(`Child process exited with code ${code}`);
             app.quit();
