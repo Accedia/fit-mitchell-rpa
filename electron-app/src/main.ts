@@ -14,6 +14,10 @@ import log from 'electron-log';
 import { FirebaseService, SessionStatus } from './utils/firebase';
 import mitchell_importer from './utils/mitchell_importer';
 import { spawn } from 'child_process';
+import * as os from 'os';
+
+const userHomeDir = os.homedir();
+const fitMitchellCloudPath = path.join(userHomeDir, 'AppData', 'Local', 'FIT-Mitchell_Cloud', 'FIT.bat');
 
 const INPUT_SPEED_STORAGE_KEY = 'inputSpeed';
 
@@ -62,7 +66,10 @@ class Main {
         const url = getCustomProtocolUrl(argv);
         if (argv.some((url) => url.includes('openVBS'))) {
           try {
-            const bat = spawn('C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat', [], { windowsHide: true });
+            log.info(fitMitchellCloudPath);
+            const bat = spawn(fitMitchellCloudPath, [], { windowsHide: true });
+            log.info('here');
+            
             bat.on('close', (code) => {
             log.info(`Child process exited with code ${code}`);
               app.quit();
