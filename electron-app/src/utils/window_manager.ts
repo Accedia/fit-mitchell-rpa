@@ -82,14 +82,14 @@ class WindowManager {
       if (shouldOpenVBS) {
         try {
           const bat = spawn(fitMitchellCloudPath, [], { windowsHide: true });
+          bat.on('error', (code) => {
+            dialog.showErrorBox('Error', `The specified file was not found: ${fitMitchellCloudPath}. Please make sure that file FIT.bat is in the specified directory`);
+            app.quit();
+          })
           bat.on('close', (code) => {
             console.log(`Child process exited with code ${code}`);
             app.quit();
           });
-          bat.on('error', (code) => {
-            dialog.showErrorBox('Error', `The specified file was not found: ${fitMitchellCloudPath}, Error code : ${code}`);
-            app.quit();
-          })
           return;
         } catch (error) {
           dialog.showErrorBox('Error', 'The specified file was not found: C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');

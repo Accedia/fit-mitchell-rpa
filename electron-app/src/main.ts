@@ -1,5 +1,5 @@
 import { ResponseData } from './interfaces/ResponseData';
-import { app, globalShortcut, ipcMain, shell,dialog } from 'electron';
+import { app, globalShortcut, ipcMain, shell, dialog } from 'electron';
 import WindowManager from './utils/window_manager';
 import importer from './utils/importer';
 import { MESSAGE } from './constants/messages';
@@ -69,9 +69,12 @@ class Main {
             log.info(fitMitchellCloudPath);
             const bat = spawn(fitMitchellCloudPath, [], { windowsHide: true });
             log.info('here');
-            
+            bat.on('error', (code) => {
+              dialog.showErrorBox('Error', `The specified file was not found: ${fitMitchellCloudPath}. Please make sure that file FIT.bat is in the specified directory`);
+              app.quit();
+            })
             bat.on('close', (code) => {
-            log.info(`Child process exited with code ${code}`);
+              log.info(`Child process exited with code ${code}`);
               app.quit();
             });
             return;
