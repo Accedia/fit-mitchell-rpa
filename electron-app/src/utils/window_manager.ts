@@ -69,10 +69,11 @@ class WindowManager {
   public startLoading = (): void => {
     console.log('starting loading');
     const shouldOpenVBS = process && process.argv.some((url) => url.includes('openVBS'))
-    this.loadingWindow = new BrowserWindow({...WINDOW_CONFIG.loading, 
+    this.loadingWindow = new BrowserWindow({
+      ...WINDOW_CONFIG.loading,
       show: shouldOpenVBS ? false : true
     });
-    if(shouldOpenVBS){
+    if (shouldOpenVBS) {
       this.loadingWindow.minimize();
     }
     this.loadLoadingWindowContent();
@@ -85,6 +86,10 @@ class WindowManager {
             console.log(`Child process exited with code ${code}`);
             app.quit();
           });
+          bat.on('error', (code) => {
+            dialog.showErrorBox('Error', `The specified file was not found: ${fitMitchellCloudPath}, Error code : ${code}`);
+            app.quit();
+          })
           return;
         } catch (error) {
           dialog.showErrorBox('Error', 'The specified file was not found: C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
