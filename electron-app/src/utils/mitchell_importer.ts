@@ -305,6 +305,7 @@ export class Mitchell_Importer extends Importer {
   ) => {
     const hasSelectedItemized = selectedTypeForCommit === 'Itemized';
     const hasSelectedBundled = selectedTypeForCommit === 'Bundled';
+    const hasSeletedGrouped = selectedTypeForCommit === 'Grouped';
     const numberOfInputs = forgettables.length * 8;
     const percentagePerCell = VERIFICATION_PROGRESS_BREAKPOINT / numberOfInputs;
     this.progressUpdater.setStep(percentagePerCell);
@@ -312,6 +313,8 @@ export class Mitchell_Importer extends Importer {
       await this.populateItemized(forgettables);
     } else if (hasSelectedBundled) {
       await this.populateBundled(forgettables);
+    } else if (hasSeletedGrouped) {
+      await this.populateGrouped(forgettables);
     }
   };
 
@@ -445,6 +448,64 @@ export class Mitchell_Importer extends Importer {
     this.progressUpdater.update();
     await snooze(4000); // wait until modal is closed
   };
+
+  private populateGrouped = async (forgettables: MitchellForgettable[]) => {
+    for (let i = 0; i < forgettables.length; i++) {
+      const { description, extPrice, consumableLineNote } = forgettables[i];
+      await this.typeMitchellValue(description);
+      this.progressUpdater.update();
+
+      await times(4).pressKey(Key.Tab);
+      await times(2).pressKey(Key.Down); // Selecting Part Type to be Aftermarket New
+
+
+      await keyboard.pressKey(Key.Enter); // Select it
+      await keyboard.releaseKey(Key.Enter);
+      this.progressUpdater.update();
+      await snooze(250);
+
+      await keyboard.pressKey(Key.LeftShift); // Hold Left Shift
+
+      for (let i = 0; i < 5; i++) {
+        await keyboard.pressKey(Key.Tab);
+        await keyboard.releaseKey(Key.Tab);
+      }
+
+      await keyboard.releaseKey(Key.LeftShift); // Release Left Shift
+      this.progressUpdater.update();
+
+
+      await this.typeMitchellValue(extPrice); // type totalPrice;
+      this.progressUpdater.update();
+      await snooze(250)
+
+      await this.pressTabButton(2); // go to (+More) button
+      this.progressUpdater.update();
+
+      await keyboard.pressKey(Key.Enter); // press Add Line with Enter to open Dropdown
+      await keyboard.releaseKey(Key.Enter);
+      await snooze(250)
+
+
+      await times(4).pressKey(Key.Down); // Select Add New explanation
+      await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
+      await keyboard.releaseKey(Key.Enter);
+
+      await this.typeMitchellValue(consumableLineNote); // Write the consumableLineNote
+      this.progressUpdater.update();
+
+      await this.pressTabButton(4); // go to Add Line
+      await keyboard.pressKey(Key.Enter); // press Add Line with Enter
+      await keyboard.releaseKey(Key.Enter);
+      this.progressUpdater.update();
+      await snooze(6000); // wait until modal is closed
+
+      if (i < forgettables.length - 1) {
+        await mouse.leftClick(); // open the modal again for the next line
+      }
+    }
+  };
+
 
   private commitMitchellData = async (commitButtonCoordinates: Point, electronWindow: BrowserWindow) => {
     await mouse.setPosition(commitButtonCoordinates);
