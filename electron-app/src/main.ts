@@ -15,6 +15,7 @@ import { FirebaseService, SessionStatus } from './utils/firebase';
 import mitchell_importer from './utils/mitchell_importer';
 import { spawn } from 'child_process';
 import * as os from 'os';
+import { sortForgettablesByGroupId } from './utils/sort_forgettables';
 
 const userHomeDir = os.homedir();
 const fitMitchellCloudPath = path.join(userHomeDir, 'AppData', 'Local', 'FIT-Mitchell_Cloud', 'FIT.bat');
@@ -70,16 +71,22 @@ class Main {
             const bat = spawn(fitMitchellCloudPath, [], { windowsHide: true });
             log.info('here');
             bat.on('error', (code) => {
-              dialog.showErrorBox('Error', `The specified file was not found: ${fitMitchellCloudPath}. Please make sure that file FIT.bat is in the specified directory`);
+              dialog.showErrorBox(
+                'Error',
+                `The specified file was not found: ${fitMitchellCloudPath}. Please make sure that file FIT.bat is in the specified directory`
+              );
               app.quit();
-            })
+            });
             bat.on('close', (code) => {
               log.info(`Child process exited with code ${code}`);
               app.quit();
             });
             return;
           } catch (error) {
-            dialog.showErrorBox('Error', 'The specified file was not found: C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat');
+            dialog.showErrorBox(
+              'Error',
+              'The specified file was not found: C:\\FIT-Mitchell-Cloud-RO-Import-Tool\\FIT.bat'
+            );
           }
         }
         this.finalUrl = url;
@@ -174,6 +181,7 @@ class Main {
       /** Fetch the data. Replace localhost with [::1] because otherwise it does not work */
       url = url.replace('localhost', '[::1]');
       const { data } = await axios.get<ResponseData>(url);
+      console.log(data);
       this.automationIdToFinishRPA = data.automationIdToFinishRPA;
       this.finalUrl = url;
       const existingUrl = store.get('url') as string | null;
@@ -183,6 +191,11 @@ class Main {
       }
       await FirebaseService.setSessionStatus(data.automationId, SessionStatus.APP_STARTED);
 
+      /** Sort forgettables by groupId before processing */
+      if (data.forgettables && data.forgettables.length > 0) {
+        data.forgettables = sortForgettablesByGroupId(data.forgettables);
+      }
+      console.log('Sorted forgettables:', data.forgettables);
       /** Do the population (CCC || Mitchell) */
       if (data.dataSource === 'Mitchell') {
         // await importer.startMitchellPopulation(data, this.windowManager.mainWindow);
