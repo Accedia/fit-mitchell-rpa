@@ -15,6 +15,7 @@ import { isDev } from './is_dev';
 import { MitchellForgettable } from '../interfaces/Forgettable';
 import { times } from './times_do';
 import { VERIFICATION_PROGRESS_BREAKPOINT } from '../constants/verification_progress_breakpoint';
+import { sortForgettablesByGroupId } from './sort_forgettables';
 
 enum MitchellButtons {
   commitButton = 'COMMIT',
@@ -303,18 +304,22 @@ export class Mitchell_Importer extends Importer {
     forgettables: MitchellForgettable[],
     selectedTypeForCommit: string
   ) => {
+    // Sort forgettables by groupId based on ORDERED_GROUP_IDS
+    const sortedForgettables = sortForgettablesByGroupId(forgettables);
+    console.log('Sorted forgettables:', sortedForgettables);
+
     const hasSelectedItemized = selectedTypeForCommit === 'Itemized';
     const hasSelectedBundled = selectedTypeForCommit === 'Bundled';
     const hasSeletedGrouped = selectedTypeForCommit === 'Grouped';
-    const numberOfInputs = forgettables.length * 8;
+    const numberOfInputs = sortedForgettables.length * 8;
     const percentagePerCell = VERIFICATION_PROGRESS_BREAKPOINT / numberOfInputs;
     this.progressUpdater.setStep(percentagePerCell);
     if (hasSelectedItemized) {
-      await this.populateItemized(forgettables);
+      await this.populateItemized(sortedForgettables);
     } else if (hasSelectedBundled) {
-      await this.populateBundled(forgettables);
+      await this.populateBundled(sortedForgettables);
     } else if (hasSeletedGrouped) {
-      await this.populateGrouped(forgettables);
+      await this.populateGrouped(sortedForgettables);
     }
   };
 
@@ -338,7 +343,6 @@ export class Mitchell_Importer extends Importer {
       await times(4).pressKey(Key.Tab);
       await times(2).pressKey(Key.Down); // Selecting Part Type to be Aftermarket New
 
-
       await keyboard.pressKey(Key.Enter); // Select it
       await keyboard.releaseKey(Key.Enter);
       await snooze(250);
@@ -353,7 +357,7 @@ export class Mitchell_Importer extends Importer {
       await keyboard.releaseKey(Key.LeftShift); // Release Left Shift
       await this.typeMitchellValue(partNumber); // Type Part Number
       this.progressUpdater.update();
-      await snooze(250)
+      await snooze(250);
 
       await this.pressTabButton(1); // Go to Quantity
       // // quantity is sometimes null if its a 0% and no update and it crashesh so we put default 1?
@@ -363,23 +367,22 @@ export class Mitchell_Importer extends Importer {
         await keyboard.type(quantity.toString());
       }
       this.progressUpdater.update();
-      await snooze(250)
-      await keyboard.pressKey(Key.Tab)
-      await keyboard.releaseKey(Key.Tab)
-      await snooze(250)
+      await snooze(250);
+      await keyboard.pressKey(Key.Tab);
+      await keyboard.releaseKey(Key.Tab);
+      await snooze(250);
       // await this.pressTabButton(1); // Go to price
 
       await this.typeMitchellValue(partPrice); // type totalPrice;
       this.progressUpdater.update();
-      await snooze(250)
+      await snooze(250);
 
       await this.pressTabButton(2); // go to (+More) button
       this.progressUpdater.update();
 
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter to open Dropdown
       await keyboard.releaseKey(Key.Enter);
-      await snooze(250)
-
+      await snooze(250);
 
       await times(4).pressKey(Key.Down); // Select Add New explanation
       await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
@@ -458,7 +461,6 @@ export class Mitchell_Importer extends Importer {
       await times(4).pressKey(Key.Tab);
       await times(2).pressKey(Key.Down); // Selecting Part Type to be Aftermarket New
 
-
       await keyboard.pressKey(Key.Enter); // Select it
       await keyboard.releaseKey(Key.Enter);
       this.progressUpdater.update();
@@ -474,18 +476,16 @@ export class Mitchell_Importer extends Importer {
       await keyboard.releaseKey(Key.LeftShift); // Release Left Shift
       this.progressUpdater.update();
 
-
       await this.typeMitchellValue(extPrice); // type totalPrice;
       this.progressUpdater.update();
-      await snooze(250)
+      await snooze(250);
 
       await this.pressTabButton(2); // go to (+More) button
       this.progressUpdater.update();
 
       await keyboard.pressKey(Key.Enter); // press Add Line with Enter to open Dropdown
       await keyboard.releaseKey(Key.Enter);
-      await snooze(250)
-
+      await snooze(250);
 
       await times(4).pressKey(Key.Down); // Select Add New explanation
       await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
@@ -505,7 +505,6 @@ export class Mitchell_Importer extends Importer {
       }
     }
   };
-
 
   private commitMitchellData = async (commitButtonCoordinates: Point, electronWindow: BrowserWindow) => {
     await mouse.setPosition(commitButtonCoordinates);

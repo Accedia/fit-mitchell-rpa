@@ -16,6 +16,7 @@ export interface Forgettable {
 export interface MitchellForgettable {
   oper: string;
   description?: string;
+  groupId?: string;
   quantity?: string;
   partPrice?: string;
   extPrice?: string;
