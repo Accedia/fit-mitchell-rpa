@@ -31,6 +31,7 @@ export const ORDERED_GROUP_IDS: string[] = [
   'rollbarcomponents',
   'removabletop',
   'roof',
+  'roofwithorwithoutsunroof',
   'pillarsrockerfloor',
   'frontdoor',
   'reardoor',
