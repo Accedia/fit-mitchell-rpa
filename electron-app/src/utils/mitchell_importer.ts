@@ -387,6 +387,13 @@ export class Mitchell_Importer extends Importer {
       await times(4).pressKey(Key.Down); // Select Add New explanation
       await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
       await keyboard.releaseKey(Key.Enter);
+      await snooze(250);
+      await keyboard.pressKey(Key.LeftShift); // Hold Shift
+      for (let j = 0; j < 2; j++) {
+        await keyboard.pressKey(Key.Tab);
+        await keyboard.releaseKey(Key.Tab);
+      }
+      await keyboard.releaseKey(Key.LeftShift); // Focus the Explanation textarea
       await this.typeMitchellValue(consumableLineNote); // Write the consumableLineNote
 
       await this.pressTabButton(4); // go to Add Line
@@ -442,6 +449,13 @@ export class Mitchell_Importer extends Importer {
     await times(4).pressKey(Key.Down); // Select Add New explanation
     await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
     await keyboard.releaseKey(Key.Enter);
+    await snooze(250);
+    await keyboard.pressKey(Key.LeftShift); // Hold Shift
+    for (let j = 0; j < 2; j++) {
+      await keyboard.pressKey(Key.Tab);
+      await keyboard.releaseKey(Key.Tab);
+    }
+    await keyboard.releaseKey(Key.LeftShift); // Focus the Explanation textarea
     await this.typeMitchellValue(this.BUNDLED_LINE_NOTE); // Write the default bundled line note
 
     await snooze(1000);
@@ -490,6 +504,13 @@ export class Mitchell_Importer extends Importer {
       await times(4).pressKey(Key.Down); // Select Add New explanation
       await keyboard.pressKey(Key.Enter); // Press Add new explanation to open the textarea
       await keyboard.releaseKey(Key.Enter);
+      await snooze(250);
+      await keyboard.pressKey(Key.LeftShift); // Hold Shift
+      for (let j = 0; j < 2; j++) {
+        await keyboard.pressKey(Key.Tab);
+        await keyboard.releaseKey(Key.Tab);
+      }
+      await keyboard.releaseKey(Key.LeftShift); // Focus the Explanation textarea
 
       await this.typeMitchellValue(consumableLineNote); // Write the consumableLineNote
       this.progressUpdater.update();
