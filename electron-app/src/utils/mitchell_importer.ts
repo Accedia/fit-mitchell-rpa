@@ -58,9 +58,8 @@ export class Mitchell_Importer extends Importer {
 
     // ! Left only for debug purposes
     // ? Uncomment if needed, do not deploy to prod
-    if (isLookingForCommitButton) {
-      screen.config.confidence = 0.96;
-    }
+     // Without this, the Manual Line search falls back to nut.js's default 0.99 confidence and never matches
+    screen.config.confidence = isLookingForCommitButton ? 0.96 : 0.9;
     // screen.config.autoHighlight = true;
     // screen.config.highlightDurationMs = 3000;
     // screen.config.highlightOpacity = 0.8;
